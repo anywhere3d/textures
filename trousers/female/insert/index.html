@@ -1,1 +1,674 @@
+<!DOCTYPE html>
+<html>
+<head>
 
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="description" contents="{{description}}">
+    <!-- link rel="manifest" href="/manifest.json" -->
+    <title>female trousers insert (index.html v1.2)</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootbox-dialoges.css">
+    <link rel="stylesheet" href="/css/side-panels.css">
+    <link rel="stylesheet" href="/css/messg.css" >
+    <link rel="stylesheet" href="/css/spectrum.css">
+    <link rel="stylesheet" href="/css/colorpicker.css">
+    <link rel="stylesheet" href="/css/spinner.css">
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+    <link rel="stylesheet" href="/css/alerts.css">
+    <link rel="stylesheet" href="/css/panel-ui.css">
+    <link rel="stylesheet" href="/css/anywhere3d.css">
+    <link rel="stylesheet" href="/css/joystick.css">
+    <link rel="stylesheet" href="/css/jquery.Jcrop.css">
+
+                <!-- JQUERY -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery-ui.js"></script>
+    <script src="/js/jquery.Jcrop.js"></script>
+    <script src="/js/jquery.lazy.js"></script>
+    <script src="/js/jquery.lazy.plugins.js"></script>
+
+    <script>
+    
+        debugMode = true;
+        var jsFolder = "/js/";
+        var navbarFolder = "/navbar/";
+        var scriptsFolder = "/scripts/";
+        var skinnedFolder  = "/skinned/";
+        var componentsFolder = "/components/";
+        var animationsFolder = "/animations/";
+        $.ajaxSetup({ cache: false });
+    
+    </script>
+
+</head>
+
+
+
+<body>
+
+<style>
+
+    body { margin:0px; height:100vh; overflow:hidden; font-family: Arial, sans-serif; }
+    canvas { display:block !important; }
+
+    #body-section { 
+        height:100%; padding-top:0px; padding-bottom:0px; 
+        background-color:rgba(0,0,0,1); overflow:hidden; 
+    }
+
+    .navbar.navbar-default.navbar-fixed-top { background: -webkit-linear-gradient(#484646,#020202); }
+
+    #render-container { 
+        width:100%; height:100%; 
+        opacity:1; background-color:rgb(0,0,0); 
+    }
+
+    #joystick1, #joystick2, #jumpButton  { z-index:0 !important; }
+
+    .twitter-holder { text-align:center; margin:10px 0px; }    
+
+    .menu-helpers a,
+    .editor-helpers a,
+    .mode-helpers a,
+    .updater-helpers a,
+    .helpers a { font:bold 16px Arial; cursor:pointer; text-decoration:none; }
+
+    .ui-dialog { opacity:1 !important; }
+
+    .left-slot, .right-slot { margin-bottom:10px; }
+    .side-holder { width:84%; margin-bottom:10px; }    
+
+    .modal-dialog {
+    /*  width:fit-content;  */
+        max-width: 400px;
+    }
+
+    .alert-small {
+        max-width: 60%;
+        font-weight: 700;
+    }
+
+</style>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+
+    <div id="navbar-holder" class="container">
+        <script>
+        //  navbar-index.html
+            var navbarHolderSelector = "#navbar-holder";
+            var navbarComponent = navbarFolder + "navbar-index.html";
+            $(navbarHolderSelector).load(navbarComponent, function(response, status, xhr){
+                debugMode && console.log("navbar-index:", status);
+            });
+        </script>
+    </div>
+
+</nav>
+
+
+<section class="mbr-section" id="body-section">
+
+    <div id="render-container" class="mbr-overlay"></div>
+
+    <div class="joystick-controls" id="joystick-controls-1"></div>
+    <div class="joystick-controls" id="joystick-controls-2"></div>
+
+    <div class="side-panel" id="left-side">
+        <div id="left-side-pinbtn" title="click this to pin/unpin panel"></div>
+
+        <div id="left-side-content">
+
+            <div id="left-slot1-holder">
+                <li id="skybox-background" class="menu-helpers"><a>Skybox background</a>
+                    <script>
+                    //  skybox-background-button.html
+                        var skyboxButtonHolderSelector = "#left-slot1-holder";
+                        var skyboxBackgroundButtonComponent = componentsFolder + "skybox-background-button.html";
+                        $(skyboxButtonHolderSelector).load(skyboxBackgroundButtonComponent, function(response, status, xhr){
+                            debugMode && console.log("skybox-background-button:", status);
+                        });
+                    </script>                
+                </li>
+            </div>
+
+            <div id="left-slot2-holder">
+                <style>
+                    .helpers a { font-size:16px; font-weight:bold; cursor:pointer; text-decoration:none; } 
+                </style>
+                <h4>Avatar helpers:</h4>
+
+                <li id="trousers-only-helper" class="helpers"><a>Trousers only</a>
+                    <script>
+                        var trousersOnlyHelperSelector = "#trousers-only-helper";
+                        $(trousersOnlyHelperSelector).on("click", function(){
+                            localPlayer.outfit.removeAll();
+                            cameraControls.radius = 24;
+                            cameraControls.offset.y = 14;
+                            localPlayer.outfit.fromDNA( trousers );
+                        });
+                    </script>
+                </li>
+                <li id="reset-avatar-helper" class="helpers"><a>Reset avatar</a>
+                    <script>
+                        var resetAvatarHelperSelector = "#reset-avatar-helper";
+                        $(resetAvatarHelperSelector).on("click", function(){
+                            localPlayer.outfit.removeAll();
+                            cameraControls.radius = 24;
+                            cameraControls.offset.y = 20;
+                            localPlayer.outfit.fromDNA( female_body_tshirt_trousers );
+                        });
+                    </script>
+                </li>
+                <hr>
+                <h4>Animation helpers:</h4>
+                <li id="animation-play-helper" class="helpers"><a>Play animation</a>
+                    <script>
+                        var animationPlayHelperSelector = "#animation-play-helper";
+                        var animationStopHelperSelector = "#animation-stop-helper";
+                        $(animationPlayHelperSelector).on("click", function(){
+                            localPlayer.outfit.AnimationsHandler.refresh();
+                        });
+                        $(animationPlayHelperSelector).on("click", function(){
+                            $(animationStopHelperSelector)[0].active = true;
+                            $(animationStopHelperSelector).find("a").text("Pause animation");
+                        });
+                    </script>
+                </li>
+                <li id="animation-stop-helper" class="helpers"><a>Pause animation</a>
+                    <script>
+                        var animationStopHelperSelector = "#animation-stop-helper";
+                        $(animationStopHelperSelector)[0].active = true;
+                        $(animationStopHelperSelector).on("click", function(){
+                            this.active = !this.active;
+                        });
+                        $(animationStopHelperSelector).on("click", function(){
+                            if ( !this.active )
+                                localPlayer.outfit.AnimationsHandler.stop();
+                            else
+                                localPlayer.outfit.AnimationsHandler.refresh();
+                        });
+                        $(animationStopHelperSelector).on("click", function(){
+                            if ( !this.active )
+                                $(this).find("a").text("Resume animation");
+                            else
+                                $(this).find("a").text("Pause animation");
+                        });
+                    </script>
+                </li>
+            </div>
+
+            <div id="left-slot3-holder">
+                <!-- display-helpers.html -->
+            </div>
+
+            <div id="left-slot4-holder"></div>
+            <div id="left-slot5-holder"></div>
+            <div id="left-slot6-holder"></div>
+            <div id="left-slot7-holder"></div>
+            <div id="left-slot8-holder"></div>
+            <div id="left-slot9-holder"></div>
+            <div id="left-slot10-holder"></div>
+
+            <div class="twitter-holder">
+                <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-url="http://anywhere3d.com" data-lang="en" data-show-count="false">Tweet</a>
+                <a href="https://twitter.com/anywhere3d?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-lang="en" data-show-count="false">Follow</a>
+                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+        </div>
+    </div>
+
+    <div class="side-panel" id="right-side">
+        <div id="right-side-pinbtn" title="click this to pin/unpin panel"></div>
+
+        <div id="right-side-content">
+
+            <div id="actions-holder">
+                <li id="action-controls" class="menu-helpers"><a>Action Controls</a></li>
+            </div>
+
+            <div id="right-slot1-holder" class="side-holder"></div>
+            <div id="right-slot2-holder" class="side-holder"></div>
+            <div id="right-slot3-holder" class="side-holder"></div>
+            <div id="right-slot4-holder" class="side-holder"></div>
+            <div id="right-slot5-holder" class="side-holder"></div>
+            <div id="right-slot6-holder" class="side-holder"></div>
+            <div id="right-slot7-holder" class="side-holder"></div>
+            <div id="right-slot8-holder" class="side-holder"></div>
+            <div id="right-slot9-holder" class="side-holder"></div>
+            <div id="right-slot10-holder" class="side-holder"></div>
+
+        </div>
+    </div>
+
+</section>
+
+        <!-- SOCKETCLUSTER -->
+
+<script src="/js/socketcluster.js"></script>
+<script src="/js/sc-codec-min-bin.js"></script>
+
+
+       <!-- INFLATE - DEFLATE -->
+
+<script src="/js/rawinflate.js"></script>
+<script src="/js/rawdeflate.js"></script>
+<script src="/scripts/encode.js"></script>
+<script src="/scripts/decode.js"></script>
+
+            <!-- ZARGODB -->
+
+<script src="/js/zangodb.min.js"></script>
+<script src="/js/anywheredb.js"></script>
+
+         <!-- LOCAL STORAGE -->
+
+<script src="/js/store2.js"></script>
+<script src="/js/store.on.js"></script>
+<script src="/js/store.array.js"></script>
+
+        <!-- LOCAL FORAGE -->
+
+<script src="/js/localforage.js"></script>
+
+<script>
+
+    var CacheStorage = localforage.createInstance({
+        driver: localforage.INDEXEDDB,
+        name: "anywhere3d",
+        storeName: "cache",
+        version: 1.0
+    });
+
+    CacheStorage.ready().then(function() {
+        console.log("[CacheStorage ready]:", CacheStorage.driver()); // <-- asyncStorage
+    }).catch(function (err) {
+        console.error("[CacheStorage Error]:", err); 
+    });
+
+</script>
+
+               <!-- W3 -->
+
+<script src="/js/w3.js"></script>
+
+          <!-- USER SETTINGS -->
+
+<script src="/js/userSettings.js"></script>
+
+        <!-- LIBRARIES -->
+
+<script src="/js/validator.min.js"></script>
+<script async src="/js/alerts.js"></script>
+<script async src="/js/bootbox.min.js"></script>
+<script async src="/js/bootstrap.min.js"></script>
+<script async src="/js/DeviceDetector.js"></script>
+<script async src="/js/MathDecimalAdjustment.js"></script>
+<script async src="/js/html2canvas.js"></script>
+<script async src="/js/spectrum.js"></script>
+<script async src="/js/watermark.js"></script>
+<script async src="/js/sharer.js"></script>
+<script async src="/js/helpers.js"></script>
+<script async src="/js/side-panels.js"></script>
+<script async src="/js/jquery.countdown.js"></script>
+
+        <!-- THREEJS -->
+
+<script src="/three/three.js"></script>
+<script src="/three/EditorControls.js"></script>
+<script src="/three/Detector.js"></script>
+<script src="/three/Projector.js"></script>
+<script src="/three/Animation.js"></script>
+<script src="/three/AnimationHandler.js"></script>
+<script src="/three/KeyFrameAnimation.js"></script>
+<script src="/js/shader.js"></script>
+
+<script>
+    THREE.Cache.enabled = true;
+    THREE.Texture.DEFAULT_IMAGE = "https://i.imgur.com/8eycYxu.png";
+</script>
+
+       <!-- MESHWALK -->
+
+<script src="/js/MW.js"></script>
+<script src="/js/MWtps.js"></script>
+<script src="/js/VirtualInput.js"></script>
+
+        <!-- SCENE -->
+
+<script src="/js/scene-helpers.js"></script>
+
+<script>
+
+//  scene.js
+
+    var debugMode;
+
+    var fontFolder = "/three/fonts/";
+    var fontPath = fontFolder + "helvetiker_regular.typeface.json";
+    var sceneContainerSelector = "#render-container";
+    var container = $(sceneContainerSelector)[0];
+
+    var scene, 
+        camera, 
+        renderer, 
+        controls;
+
+    var sceneLights, 
+        axisCustomHelper, 
+        axisOriginHelper;
+
+    var projector, 
+        keyboard, 
+        clock;
+
+    var scenename = "Webspaces";
+
+    scene = new THREE.Scene();
+    scene.name = scenename;
+
+    camera = new FpsCamera(50, 1, 10000);
+    camera.position.set(0, 20, 100);
+//  controls = new THREE.EditorControls(camera);
+
+    scene.add(directionalLight(0xffffff,  1000, 1000,  1000, 0.5));
+    scene.add(directionalLight(0xffffff,  1000, 1000, -1000, 0.5)); 
+    scene.add(directionalLight(0xffffff, -1000, 1000,  1000, 0.5)); 
+    scene.add(directionalLight(0xffffff, -1000, 1000, -1000, 0.5));
+    scene.add(directionalLight(0xffffff,     0,-5000,     0, 0.3));
+
+    groundHelper = new GroundHelper(1000, 10);  
+    groundHelper.visible = false;
+    axisCustomHelper = new CustomAxisHelper(5200);
+    axisCustomHelper.visible = false;
+    axisOriginHelper = new OriginAxisHelper(1200);
+    axisOriginHelper.visible = false;
+
+    projector = new THREE.Projector();
+//  keyboard = new KeyboardState();
+    clock = new THREE.Clock();
+
+    renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        preserveDrawingBuffer: true,
+    });
+
+    renderer.shadowMap.enabled = true;
+    renderer.setPixelRatio( window.devicePixelRatio );
+//  renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( container.clientWidth, container.clientHeight );
+    container.appendChild( renderer.domElement );
+
+</script>
+
+<script>
+
+//  MW world.js
+
+    var world, groundBody;
+
+//  MESHWALK WORLD.
+
+    world = new MW.World();
+
+//  OCTREE.
+
+//  Make a octree object, which will be the 
+//  container of rigid objects such as terrain ect.
+    partition = 5;
+    min = new THREE.Vector3( -5000, -1000, -5000 );
+    max = new THREE.Vector3(  5000,  1000,  5000 );
+    octree = new MW.Octree( min, max, partition );
+    world.add( octree );
+
+//  Ground.
+    var ground = new THREE.Mesh(
+        new THREE.PlaneGeometry( 6000, 6000, 1, 1 ),
+        new THREE.MeshBasicMaterial({ 
+            color:0x888888,
+            transparent:true,
+            opacity:0.5, 
+            wireframe:false 
+        })
+    );
+    ground.rotation.x = THREE.Math.degToRad( -90 ); // -Math.PI/2
+
+//  We want the ground as collision surface only,
+//  so we do not add the ground in the scene.
+//  scene.add( ground );
+
+//  Add the ground to WALKMESH world octree object.
+//  MESHWALK use octree system to detect collision objects.
+    octree.importThreeMesh( ground ); // IMPORTANT //
+
+</script>
+
+<script src="/js/EdgesHelper.js"></script>
+
+        <!-- AW3D -->
+
+<script src="/js/AW3D.js"></script>
+<script src="/js/PlayerController.js"></script>
+<script src="/js/KeyInputControls.js"></script>
+<script src="/js/JoystickControls.js"></script>
+
+<script src="/js/PlayerLabel.js"></script>
+
+<script src="/js/OutfitLoader.js"></script>
+<script src="/js/loaders/bonesLoader.js"></script>
+<script src="/js/loaders/animationsLoader.js"></script>
+<!-- script src="/js/loaders/skeletonLoader.js"></script -->
+
+<script async src="/js/loaders/fmBodyLoader.js"></script>
+<script async src="/js/loaders/fmHairsLoader.js"></script>
+<script async src="/js/loaders/fmDressLoader.js"></script>
+<script async src="/js/loaders/fmSandalShoesLoader.js"></script>
+<script async src="/js/loaders/fmBraLoader.js"></script>
+<script async src="/js/loaders/fmPantiesLoader.js"></script>
+<script async src="/js/loaders/fmSkirtLoader.js"></script>
+<script async src="/js/loaders/fmSneakersLoader.js"></script>
+<script async src="/js/loaders/fmTailDressLoader.js"></script>
+<script async src="/js/loaders/fmTrousersLoader.js"></script>
+<script async src="/js/loaders/fmTshirtLoader_mtl.js"></script>
+
+<script async src="/js/loaders/hmBodyLoader.js"></script>
+<script async src="/js/loaders/hmHairsLoader.js"></script>
+<script async src="/js/loaders/hmTshirtLoader.js"></script>
+<script async src="/js/loaders/hmTrousersLoader.js"></script>
+<script async src="/js/loaders/hmBoxersLoader.js"></script>
+<script async src="/js/loaders/hmSneakersLoader.js"></script>
+
+
+    <!-- COMPONENTS -->
+
+<script>
+//  display-helpers.html
+    var displayHelpersSelector = "#display-helpers";
+    var displayHelpersHolderSelector = "#left-slot3-holder";
+    var displayHelpersComponent = componentsFolder + "display-helpers.html";
+    $(displayHelpersHolderSelector).load(displayHelpersComponent, function(response, status, xhr){
+        debugMode && console.log("display-helpers:", status);
+    });
+</script>
+
+<script>
+//  outfit-trousers-editor-button.html
+    var outfitTrousersEditorHolderSelector = "#right-slot1-holder";
+    var outfitTrousersEditorButtonComponent = componentsFolder + "outfit-trousers-editor-button.html";
+    $(outfitTrousersEditorHolderSelector).load(outfitTrousersEditorButtonComponent, function(response, status, xhr){
+        debugMode && console.log("outfit-trousers-editor-button:", status);
+    });
+</script>
+
+<script>
+//  outfit-trousers-catalog-button.html
+    var outfitTrousersCatalogHolderSelector = "#right-slot2-holder";
+    var outfitTrousersCatalogButtonComponent = componentsFolder + "outfit-trousers-catalog-button.html";
+    $(outfitTrousersCatalogHolderSelector).load(outfitTrousersCatalogButtonComponent, function(response, status, xhr){
+        debugMode && console.log("outfit-trousers-catalog-button:", status);
+    });
+</script>
+
+<script>
+//  outfit-trousers-batch-insert-button.html
+    var outfitTrousersInsertHolderSelector = "#right-slot3-holder";
+    var outfitTrousersInsertButtonComponent = componentsFolder + "outfit-trousers-batch-insert-button.html";
+    $(outfitTrousersInsertHolderSelector).load(outfitTrousersInsertButtonComponent, function(response, status, xhr){
+        debugMode && console.log("outfit-trousers-batch-insert:", status);
+    });
+</script>
+
+<script>
+//  texture-trousers-map-options-button.html
+    var textureTrousersMapOptionsHolderSelector = "#right-slot4-holder";
+    var textureTrousersMapOptionsButtonComponent = componentsFolder + "texture-trousers-map-options-button.html";
+    $(textureTrousersMapOptionsHolderSelector).load(textureTrousersMapOptionsButtonComponent, function(response, status, xhr){
+        debugMode && console.log("texture-trousers-map-options-button:", status);
+    });
+</script>
+
+<script>
+//  outfit-trousers-upload-button.html
+    var outfitTrousersUploadHolderSelector = "#right-slot5-holder";
+    var outfitTrousersUploadButtonComponent = componentsFolder + "outfit-trousers-upload-button.html";
+    $(outfitTrousersUploadHolderSelector).load(outfitTrousersUploadButtonComponent, function(response, status, xhr){
+        debugMode && console.log("outfit-trousers-upload-button:", status);
+    });
+</script>
+
+<script>
+//  fabric-catalog-female-trousers-button.html
+    var fabricCatalogFemaleTrousersHolderSelector = "#right-slot6-holder";
+    var fabricCatalogFemaleTrousersButtonComponent = componentsFolder + "fabric-catalog-female-trousers-button.html";
+    $(fabricCatalogFemaleTrousersHolderSelector).load(fabricCatalogFemaleTrousersButtonComponent, function(response, status, xhr){
+        debugMode && console.log("fabric-catalog-female-trousers-button:", status);
+    });
+</script>
+
+
+
+<script>
+//  snapshot-crop-button.html
+    var snapshotHolderSelector = "#right-slot10-holder";
+    var snapshotCropButtonComponent = componentsFolder + "snapshot-crop-button.html";
+    $(snapshotHolderSelector).load(snapshotCropButtonComponent, function(response, status, xhr){
+        debugMode && console.log("snapshot-crop-button:", status);
+    });
+</script>
+
+
+
+
+    <!-- RUNTIME ENGINE -->
+
+<script src="/js/jquery-update-engine.js"></script>
+<script src="/js/jquery-render-engine.js"></script>
+
+<script>
+
+//  app.js
+
+    var debugMode;
+    var mouse = new THREE.Vector2();
+
+    var rendererHalfWidth = renderer.domElement.width * 0.5;
+    var rendererHalfHeight = renderer.domElement.height * 0.5;
+
+    localPlayer.holder.visible = false;
+    localPlayer.controller.center.set(0,1,0);
+    localPlayer.controller.direction = Math.PI;
+
+//  Background.
+    scene.background = new THREE.Color(0,0,0);
+
+//  ClearTimeout ids.
+    INTERVAL_IDS = [];
+
+//  Downcount uploads.
+    countdownReset();
+    function countdownReset(){
+        countdown = 50;
+        return countdown;
+    }
+
+//  Animate.
+
+    animate();
+
+    function animate(){
+
+        windowAnimationFrameRequestID = requestAnimationFrame( animate );
+
+        render();
+
+        update();
+
+    }
+
+
+//  Event Listeners.
+
+    $(window).on( "resize", onWindowResize );
+
+    function onWindowResize() {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize( container.clientWidth, container.clientHeight );
+        rendererHalfWidth = renderer.domElement.width * 0.5;
+        rendererHalfHeight = renderer.domElement.height * 0.5;
+    }
+
+    $(window).on( "mousemove", onMouseMove );
+
+    function onMouseMove( event ) {
+        mouse.x = ( event.clientX - rendererHalfWidth );
+        mouse.y = ( event.clientY - rendererHalfHeight );
+    }
+
+
+//  action-controls.html
+
+    var actionHolderSelector = "#actions-holder";
+    var actionControlsSelector = "#action-controls";
+    var actionControlsComponent = componentsFolder + "action-controls.html";
+    $(actionHolderSelector).load(actionControlsComponent, function(response, status, xhr){
+        debugMode && console.log("action-controls:", status);
+    });
+
+</script>
+
+
+<script>
+
+//  Load female.
+//  var skirt = "jZHLasMwEEX/RWs/ZDWWH7skYArFpZBlCUGxFVup9UCSU0Lwv3eUpNBl0Wrm3qvRHN2Q+xLWo/qGFJMc1c86QhfhxHGCjrczj5DrWCg+swjOPkID15J7e4VEChGleJ++NoddSB+azRvODxdMkrODqyTz3Ao2OcjfkL+aMKflbvwYtRrap3o3GlBG742r01QkQg6zTTot09M8VN/le3I2A/iOszTtP73aeKGVCxvOs+ghgytarBuSxZTk23hVFU1cZdsyXtF1U64p3ZLyBYJPHr9L/XlmpydtUZ3RoihIlgMc0YMVh2GsEx6gZNAcWS/UgGoSIS6Fc+ICJlrhktCQCdDu+gOwt0w5wyxX8BsngMUfe+4e4HGC82XZL4G86jmMRycug7T8AA==";
+//  var female_tshirt_blank = "tZZrb9owFIb/Sz5jiJM4dvhmO7G6C9U2qnXdNFWh8cAtuTQOnaqq/30nBKmkZR1iVHwIx359ex8d+zw4szK7d8YPTpHm2hl34cC5M9bMltDQ1Cs9cOxV2gY/8AB+PwfOXJe5bmoY6IzsjSkKnY1O1KWAwR/Te11fcvHBDS7vXG94bWG6PG10bdKlhTkenOa+apeaaLuYNmmRpXU22QjW2go6F01T2fFoZIYmn6/q4VWZj6ovF/LiZja8ruag07mx1tzpyV/18bfZyXu63OjLqjFlYduzrlYmgzFShVhiwVCMuUJBEDHESRiiUGJPqsBVPAhh4MYZON8Ujrq106tyWdbOGIeUUg8TsMlkoHTbtdIr04A9GBoXaWaKuTP2nvYMHZjSMIxAu/ZvLei8buq0sFVa66Jxxr/AM2iry9V8UWgLu3eHIXikm3S5iZ9mfVc0urDduo+Pg8ONnhry+XzpDqtiP6P7+pdGB7GiFGOCMGURGE05YtSDf7EnIqEkSyLaMzq51/ZIRkceDRn2D/CZ9H1u491O/3wcOIvU1HYrj7r40EQ6aUdPdGZW+aV6i1SKf2fnH+vZhthslVevpFFP+5Ku4CpyYx8jn7kSBYLESBCSIMqUL1QoPcJJj257uiPRPSR/dnBtDZh2aNyhSzqkjV2Yutliumk4FOrZeviaJwGe/jF5Bmc6j0W5F8++dke2Sk6ol3CEYw48kzhGPJIJEpC9LJFJFMesx7M72JGI0jCilOE34vofl6LB39NpJfeyuK99aTERkYsTHqOQCxcFxA8RYx5HAZWYEk9RLsIdFqu6LI7lMyPEdw96f173GYHRmzsRZu7lTxcfmj7Tm+3s+ddt+GlRFvO9uDJ7OpnlXzdVwutc+9qXXLGMvEhQH3nwQYFkPjx0RCB4/lzGpYyZlzyvKI6WOXuy3HnX2UWpt5+vLj4YVZtWy2k7x7oSDI8KrLk+/X47u90LWF+7owR0CZE0wCiIBEGBkhJBMdKWJ0xxlUjlBc+ArY+2R3HivTWyuS4yDQs7v3Tedj3+AQ==";
+//  var female_tshirt_blank = "xZZdT9swFIb/S67r1k7i2Omd7cRiG0XbisbYhFBKTGtoPohTJoT473OaSjS0QFcVTb1Ij3389T7n+PjRmRTpgzN8dPIkU86wNXvOvTZ6MrcNdbVQPcdcJY3xG/Xs76LnTFWRqbqyA52BudV5rtLBkbzkdvBx8qCqS8a/QP/yHrr9G2Ony5JaVTqZGzvHo1M/lM1SI2Vm4zrJ06RKRyuHpW9pO2d1XZrhYKD7Opsuqv5VkQ3K7+fi/HbSvymn1k9l2hh9r0av+kc/J0efyXzlX5S1LnLTnHWx0KkdI2SABOIURIhJ4PshBQwHAQgEcoX0oWR+YAeulLHnG9ujru30qpgXlTNEASHERdjKpFPrCZu1kitdW3mQbZwlqc6nztB93rMzDF0SUOTZ7ka+ZX8rdV0luSmTSuW1M7y2ktm2qlhMZ7kydvOwH1iJVJ3MV/bzpJ/yWuWmXfbpqbe/zmONv53NYb/Md9O567+psx9JQhDCABEaWp0JA5S49l/k8pBLQeOQdHSOH5T57zrjrs6NvV3pi6eeM0t0ZdbSqLX3zaOjZvRIpXqRXcqPyKToT3p2XE1WxCaLrHwjizq+m3Q5kyGMPAQ8CgXwOY4AxzgGhEqPy0C4mOEO3eZ0B6ILD8O1EWDcooF9iFuktZnpql5jumrYF+rpcviSJ7Y8vX/n+TYn/1RlES9ez0LBMHFjBlDELKc4igALRQy4zUoaiziMItrh1G74UHnoQ+qF4Qfxevey25QD8xCimEUgYBwCH3sBoNRlwCcCEexKwniwRQ5ZFfmhNKEYezA8SAy3IWvn6URsa+8bsOPb9Xh97/75Oivy6U6XDzUno0n2Y1WW3w7qru8mRSRCN+TEA679AF9Qz5YWzIEtOJAyISLqxi9L+MFiekdyW28XMyvUesFo7b1RNQE/HzdzLJ9ewUGB1Tcnv+4mdzsB6/pueXNBjAXxEfBDjoEvhQC2/DcPAiqZjIV0/RfAlkfb4TngfjSyqcpTZRd2rlXWdD39BQ==";
+//  var female_tshirt_blank = "tZbRbpswFIbfhes4scHYkDsIoG5ttnap1HVTFZHgBrfBUOx0iqq8+0xgalCzFqFUuTqH/9g+/6fj+MVY5MnWGL8YIs6YMa7DgfHMJV+sdUKVGzYw5DKugt9ooH93A2PF8oypUhcaI/nIhWDJ6Cya+7r4It6ycu755xDPn6E5fJB6uSxWrOTxWuo1Xgy1LaqtpkymMxWLJC6TaSPYawv9MVWqkOPRiA95ttqUw2WejYoft5Pbx8XwoVhpHcu4lPyZTf+rD34uzr7SdaPPC8VzIateNxue6BrsWz5yLQdAzyEAIwSB44QhwBDByAv8CFmuLmyc0f3NdKsHJ13m67w0xohQSk1ka5t4opWw2itecqXtQTqZxgkXK2Nsvp5Zf0CUEuJq7d6/vaD2WpWxkEVcMqGM8b32TOfKfLNKBZP69HBItEdMxesmfl31i1BMyHrf3W7Q3+gZt69u1nBYiG5Gt/Vvjfag5fiOEwAnNDHApmMCX3cPItuHBJs6idtGh1smT2S0a1LiIKuHz3bb5yo+7vTdbmCkMS/lwRzVcd9BOquqpyzhm2wefcYoBX+Sm4ty0RBbbLLinTFqad/SNXFI3Ig4AEdY040iAvxJ4IFAz5KDbOITilp0q+4+pmt2odtnfo5wrQyY1WjgENo10iIWirNDqP8yfbFe1vX1FVlxtTVXdEquV+Hyxvt+3olrW3vkegxty8UwABB6FsAWRsAPJwhgaqHI8vzIRqTFtWnvRIP7Edo61Yuskikv1QHYJtGX6/W+/HOI4muWBX7eiWhbe4So51HLhAR41A4AdsMIOL4ZAoInmLohQsRqE60bOxFQmzoudfAnTqxM89a81nFfqrOK0npWrbF/z5AOl/BlmotVJ67q4duvp8VT8zh5n2tb+5ZrpP9BoQ1DEEKkr2EKLeASYgNo4RD6NraoZ7cfMvvWOkzqKS/ho8hWTCRMb2zcs6z6tPsL";
+//  var skirt = "jZHLasMwEEX/RWs/ZDWWH7skYArFpZBlCUGxFVup9UCSU0Lwv3eUpNBl0Wrm3qvRHN2Q+xLWo/qGFJMc1c86QhfhxHGCjrczj5DrWCg+swjOPkID15J7e4VEChGleJ++NoddSB+azRvODxdMkrODqyTz3Ao2OcjfkL+aMKflbvwYtRrap3o3GlBG742r01QkQg6zTTot09M8VN/le3I2A/iOszTtP73aeKGVCxvOs+ghgytarBuSxZTk23hVFU1cZdsyXtF1U64p3ZLyBYJPHr9L/XlmpydtUZ3RoihIlgMc0YMVh2GsEx6gZNAcWS/UgGoSIS6Fc+ICJlrhktCQCdDu+gOwt0w5wyxX8BsngMUfe+4e4HGC82XZL4G86jmMRycug7T8AA==";
+//  var female_body_tshirt_skirt = "tZbZjtowFIbfJdcY7MRLwl1CnE6X6Ual6aJqFIgLniFLYzMVGs2794RQlQhaUMQoV8f5vZz/87H96MzKbOOMH50izZUzbsOB86CNnq2gwdZrNXDMPG2Cb2QA3/eBs1BlrmwNHZ2RuddFobLRVXIbQec36UbVt2H0GtPbB+wO7wwMl6dW1TpdGRjj0bGbqpnqWpnl1KZFltbZ9U6w1Vbwc2ltZcajkR7qfLGuh/MyH1Ufv0y+3M+Gd9UCdCrXxugHdf1Pffx5dvVKrHb6srK6LEyT63qtM+hDIy8igecjHPocUUIw8n0pEcUEJ2EcJcQLoOPOGchvCqnurXRersraGRMuhHAJA5t0BkrczJXOtQV7CDQu00wXC2fs/l0z/CBCcB6AduvfVtB6beu0MFVaq8I64x/gGbTV5XqxLJSB1eMhB4+UTVe7+O+oLwurCtPO+/Q06G/0VLMPNys8rIrzjO7qD40OsedHvh8jX7oUUdd3UQTZo4RFmFMXGmnXaLlR5kJGB67gPvF6+My6Pjfxcae/Pw2cZaprs1dHbdy3kK6a3tcq0+v8NnmOUop/ZTdv6tmO2GydV/8po472kK5LJQ8S7iOaUKCbJBxFkzhEMdSSTxiPuCAduk12p+m659DtUz9HuDYGTFs0eIhZi7RKC6vVPtQ/LX2xvm/7t0dkw5UBV3JJrh/k/CZ89/osrl3tkeNRMi+gOEYYhx6iHiUokhOCqPBI4oVRwgjvcN2ld6HCPYW2bepF1pqlru0e2F1DX66ftt2fhyj9pPI4Ks8i2tUeIRqGwnMxR6FgMaKBTJAfuRJxOqEikIRwr0u0TexCQJnwA+HTZ6xYGLiDtY37Up3e70M9dfy+X5bF4rwazTcv5u/c3bPkRI12tKdv4q7+cAdgGXhUxhiJMICa9lkEe0FOEJ3IkE3gUp7wgyfPxTYAwZhzzw3O2wFdwuR/l69Zlp1zuo17c2+qczVtxti+Y/lF6du7t19/zn6eRb+rPaSZwMsJMyyRxASuX4E9FHDOEAbGOGLUEyHr0tymdsYJfcnL92ipLlSRKZjY+aHy5tfTbw==";
+    var jeans = "jVHLbsIwEPwXn/NwnBCS3AoValVxojeEkImXxDR2IttBQij/3jUgwRH5tLMznt3ZK3GmHy0YS6or0VwBqZ5QQM7SykOHoDMjBMTW3BfbJMC3C0gDvQJnLiiK7Z/UGkT8tdr/Pj7YrxY/dLY/Uxad/G+KOzCSd2i2vRJ3GbzbGmy7cVwLbsT6QbhxB2y2zg22imMZSdWMJqp7FReLFOq0jE5Dg7zDqIb1m1xQ0lp5hnf5/eBkr2/RjKMUqMnTYpZTtgoztmBhlmXLsKBlGX4k7LOgWVGyJUPhI8iXKF42q/uuN6RK8vl8zpIZpioFsqn347V0mGaCYMuF1A2p2HNubFCa5ykrse/jvhHup3GGaztwA9qR6ogZI4beTavB4gY0QiO8Fe9eap/d5n5SGtHkafStHWh7H2WadpO/tBaAU5MjKC+Y/gE=";
+    var female_body_tshirt_jeans = "tVZtb9owEP4v+YzBdhzH4VtCEnVbO22jUtdNFQrEBbfkZbHphCr++y4kaolgLUJU+XTn52zf89yd82xNi3RtDZ+tPMmkNWzMnvWktJouwWGqlexZepbUxm/Sg++uZ81lkUlTQaA10I8qz2U6uIgnAQRfJmtZTfzgC2aTJ0z7Dxq2yxIjK5UsNezxbJl1WR91JfVibJI8Tar0qgVssSUsLowp9XAwUH2VzVdVf1Zkg/LH7ej2cdp/KOeAk5nSWj3Jq//iw5/Ti8/ussUXpVFFrutcVyuVQgwL7IB4tkDYFxwxQjASIooQwwTHfhjExPYgsGUG8htDqjs3nRXLorKGhLuuS4kDNKkUkLg+K5kpA/QQcC6SVOVza0hf7wwLxHU59wC75W8LaLg2VZLrMqlkbqzhPXAGvqpYzRe51HB73OfAkTTJsrVfd/2UG5nr5tzNpnc60WPlfL9Z4n6ZH0d0F79PtI9tEQgRIhFRhhgVFAWQPYqdAHNGwcm6REdrqc9EtEddLoh9As9Ol+faPsz03aZnLRJV6Z0+auxTG+mijr6SqVplk/gjWin8m95cVtNWsekqK99oow52X13KIu7FXCAWM1A3jjkKRqGPQuglQRwecJd01K2ze19deoy6p/TPAV1rAsaNNLiPnUZSoxeqMjuato5TRb3ehm/1dEBPck492bXMwqA4Ss8u9sBY9H3Xppgj33VCxLwoRiKgEeJsxFwvIoTbvKNnk9iZ+tVxhecK9pG6QpSWnW59cZ2sbbvBi7pn7VYR2HJme+1D9ra6Xez7s7uL368GbguHYxrD2A4oYoyNkMCeh3xCQ4GZ8OiIdquhpeJcDyXGnNvU+4iCIG9NdL0o5G6NNPapBTKu5V6O6z22P0f8iBr5tijy+VEFYh6+/voz/XNUgXSx+4LH8BxjB0cowgRmuott5HHuIGyzCAcOs13f6f4VbVM7Qu9zTvSDnT2XeSrhYOteZvXS5h8=";
+    var trousers = "jVHLbsIwEPwXn0PimJDXrVChIsSJ3hBCJlkS09hJbScqQvn3rgEJjsinnZ3x7M5eidVtb0Abkl+J4hJI/oQ8Mggjjg2CVvfgEVNwV+xCD9/eIxW0Eqy+oCgwP0IpKIOv5eH78cFhOV/T2WGgzD+73yS3oAVv0Gx3JfbSObcNmHpruSq5LjcPwo3bYbO2tjN5EAhfyKrXftHK4O93naziwT93FfKOvew2b3JBCmPEAO/y286KVt2i6XtRoiaeprOYsuUkYnM2iaJoMUlplk0+QvaZ0ijN2IKh8BHkSxQvmxVt02qSh3GSJCycYaqiRDZ1frwQFtMMEax5KVRFcvacGxuUxvGUZdh3cd8I99NYzZXpuAZlSX7CjBFD76pWYHAD6qMR3oo3L7XLbns/KfVp+DRaKQvK3EcZx/3oLq1KwKnJCaQTjP8=";
+    var female_body_tshirt_trousers = "tVZtb9owEP4v+YzBdhzb4VtCErVrmbZRqeumCgXiglvy0tiwoYr/PodELRGsRYgqn+78nO17nrtzXqxJnqyt/ouVxamw+rXZsVZSycnCOHS5FB1LTePK+I065rvvWDORp0KXJtDqqSeZZSLpXURj3wRfx2tRjj3/CpLxCuLuozLbpbEWpYwXyuzxYul1UR01FGo+0nGWxGUybABbbGEW51oXqt/rya5MZ8uyO83TXvHjbnD3NOk+FjODE6lUSq7E8L/44Ofk4gtbNPi80DLPVJXrcikTE0N820euzQH0OAUEIQg4D0NAIIKRF/gRsl0T2DBj8huZVHduOs0XeWn1EWWMYeQYmmRikLA6K55KbehBxjmPE5nNrD5+u7NZQIxR6hrslr8toOZal3GmirgUmbb6D4Yz4yvz5WyeCWVuD7vUcCR0vGjst10vMy0yVZ+72XROJ3okne+3C9gtsuOIbuP3ifagzX3OA8BDTADBHAPfZA8ix4eUYOMkbaLDtVBnItrFjHJkn8Cz0+a5sg8zfb/pWPNYlmqnj2r71Ea6qKKHIpHLdBx9RisFf5Lb63LSKDZZpsU7bdTC7quLSUjdiHJAImLUjSIK/EHggcD0EkcO9SlDLXWr7D5WFx+j7in9c0DXioBRLQ3sQqeWVKu5LPWOpo3jVFFvtuFbPR2jJzqnnuRGpIGfH6VnG3tgLHoeszGkwGNOAIgbRoD7OASUDAhzQ4SoTVt61omdqV8dxl3GyWfqaqKUaHXrq+tkbZsNXtU9a7f+fb5il3TVPGTvq9vGfjy72/j9aqA2dyjEkRnbPgaEkAHg0HWBh3DAIeEuHuB2NTRUnOuhhJBSG7ufURDovYmu5rnYrZHaPrVARpXci1G1x/bniB5RI9/meTY7qkD049dfz5Pnowqkjd0XPDLPMXRgCEKIzExn0AYupQ6ANgmh7xCbeU77r2ib2hF6n3OiH+zsmcgSYQ62HkRaLW3+AQ==";
+    localPlayer.fromDNA( female_body_tshirt_trousers );
+
+//  CameraControls.
+    cameraControls.radius = 24;
+    cameraControls.offset.y = 20;
+
+//  Update vertical offset output value on startup.
+    $("#camera-offset-output").val( cameraControls.offset.y );
+
+</script>
+
+
+
+<script src="/js/editor-panel.js"></script>
+<script src="/js/snapshot-panel.js"></script>
+<script src="/js/dialogTargetEventListeners.js"></script>
+
+</body>
+</html>
