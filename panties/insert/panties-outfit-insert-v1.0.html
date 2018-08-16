@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <meta name="description" contents="{{description}}">
     <link rel="manifest" href="/manifest.json">
-    <title>panties outfit insert (index.html v1.2)</title>
+    <title>panties outfit insert (index.html v1.0)</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootbox-dialoges.css">
     <link rel="stylesheet" href="/css/side-panels.css">
@@ -108,7 +108,6 @@
     .modal-dialog {
         width:fit-content;
         max-width: 400px;
-        min-width: 250px;
     }
 
 </style>
@@ -141,51 +140,27 @@
 
         <div id="left-side-content">
 
-            <div id="left-slot1-holder"></div>
+            <div id="left-slot0-holder"></div>
+
+            <div id="left-slot1-holder" class="left-slot">
+                <li id="skybox-background" class="menu-helpers"><a>Skybox background</a></li>
+                <script>
+                //  skybox-background-button.html
+                    var skyboxButtonHolderSelector = "#left-slot1-holder";
+                    var skyboxBackgroundButtonComponent = componentsFolder + "skybox-background-button.html";
+                    $(skyboxButtonHolderSelector).load(skyboxBackgroundButtonComponent, function(response, status, xhr){
+                        debugMode && console.log("skybox-background-button:", status);
+                    });
+                </script>
+            </div>
+
             <div id="left-slot2-holder"></div>
-
-            <div id="left-slot3-holder" class="left-slot" style="margin-bottom:30px;">
-                <li id="skybox-background" class="menu-helpers"><a>Skybox background</a>
-                    <script>
-                    //  skybox-background-button.html
-                        var skyboxButtonHolderSelector = "#left-slot3-holder";
-                        var skyboxBackgroundButtonComponent = componentsFolder + "skybox-background-button.html";
-                        $(skyboxButtonHolderSelector).load(skyboxBackgroundButtonComponent, function(response, status, xhr){
-                            debugMode && console.log("skybox-background-button:", status);
-                        });
-                    </script>                
-                </li>
-            </div>
-
-            <div id="left-slot4-holder">
-                <style>
-                    .helpers a { font-size:16px; font-weight:bold; cursor:pointer; text-decoration:none; } 
-                </style>
-                <h4>Display helpers:</h4>
-                <li id="outfit-only-helper" class="helpers"><a>Panties only</a>
-                    <script>
-                        var outfitOnlyHelperSelector = "#outfit-only-helper";
-                        $(outfitOnlyHelperSelector).on("click", function(){
-                            localPlayer.outfit.remove("hairs", "body", "shoes", "bra");
-                            localPlayer.outfit.AnimationsHandler.stop();
-                        });
-                    </script>
-                </li>
-                <li id="reset-avatar-helper" class="helpers"><a>Reset avatar</a>
-                    <script>
-                        var resetAvatarHelperSelector = "#reset-avatar-helper";
-                        $(resetAvatarHelperSelector).on("click", function(){
-                            localPlayer.outfit.fromDNA( female_mid_skin );
-                        });
-                    </script>
-                </li>
-            </div>
+            <div id="left-slot3-holder"></div>
+            <div id="left-slot4-holder"></div>
 
             <div id="left-slot5-holder">
                 <!-- display-helpers.html -->
             </div>
-
-            <div id="left-slot6-holder"></div>
 
             <div class="twitter-holder">
                 <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-url="http://anywhere3d.com" data-lang="en" data-show-count="false">Tweet</a>
@@ -206,8 +181,19 @@
 
             <div id="slot1-holder" class="side-holder">
                 <script>
+                //  outfit-bra-editor-button.html
+                    var outfitBraEditorHolderSelector = "#slot1-holder";
+                    var outfitBraEditorButtonComponent = componentsFolder + "outfit-bra-editor-button.html";
+                    $(outfitBraEditorHolderSelector).load(outfitBraEditorButtonComponent, function(response, status, xhr){
+                        debugMode && console.log("outfit-bra-editor-button:", status);
+                    });
+                </script>
+            </div>
+
+            <div id="slot2-holder" class="side-holder">
+                <script>
                 //  outfit-panties-editor-button.html
-                    var outfitPantiesEditorHolderSelector = "#slot1-holder";
+                    var outfitPantiesEditorHolderSelector = "#slot2-holder";
                     var outfitPantiesEditorButtonComponent = componentsFolder + "outfit-panties-editor-button.html";
                     $(outfitPantiesEditorHolderSelector).load(outfitPantiesEditorButtonComponent, function(response, status, xhr){
                         debugMode && console.log("outfit-panties-editor-button:", status);
@@ -215,10 +201,10 @@
                 </script>
             </div>
 
-            <div id="slot2-holder" class="side-holder">
+            <div id="slot3-holder" class="side-holder">
                 <script>
                 //  avatar-skin-editor-button.html
-                    var avatarEditorHolderSelector = "#slot2-holder";
+                    var avatarEditorHolderSelector = "#slot3-holder";
                     var skinEditorButtonComponent = componentsFolder + "avatar-skin-editor-button.html";
                     $(avatarEditorHolderSelector).load(skinEditorButtonComponent, function(response, status, xhr){
                         debugMode && console.log("avatar-skin-editor-button:", status);
@@ -226,24 +212,13 @@
                 </script>
             </div>
 
-            <div id="slot3-holder" class="side-holder">
+            <div id="slot4-holder" class="side-holder">
                 <script>
                 //  outfit-item-upload-button.html
-                    var outfitPantiesUploadHolderSelector = "#slot3-holder";
+                    var outfitPantiesUploadHolderSelector = "#slot4-holder";
                     var outfitPantiesUploadButtonComponent = componentsFolder + "outfit-panties-upload-button.html";
                     $(outfitPantiesUploadHolderSelector).load(outfitPantiesUploadButtonComponent, function(response, status, xhr){
                         debugMode && console.log("outfit-panties-upload-button:", status);
-                    });
-                </script>
-            </div>
-
-            <div id="slot4-holder" class="side-holder">
-                <script>
-                //  outfit-panties-catalog-button.html
-                    var outfitPantiesCatalogHolderSelector = "#slot4-holder";
-                    var outfitPantiesCatalogButtonComponent = componentsFolder + "outfit-panties-catalog-button.html";
-                    $(outfitPantiesCatalogHolderSelector).load(outfitPantiesCatalogButtonComponent, function(response, status, xhr){
-                        debugMode && console.log("outfit-panties-catalog-button:", status);
                     });
                 </script>
             </div>
@@ -456,15 +431,13 @@
 <script src="/js/JoystickControls.js"></script>
 <script src="/js/OutfitLoader.js"></script>
 <script src="/js/loaders/animationsLoader.js"></script>
-
-   <!-- OUTFIT LOADERS -->
-
-<script async src="/js/loaders/bonesLoader.js"></script>
-<script async src="/js/loaders/fmBodyLoader.js"></script>
-<script async src="/js/loaders/fmHairsLoader.js"></script>
-<script async src="/js/loaders/fmSandalShoesLoader.js"></script>
-<script async src="/js/loaders/fmBraLoader.js"></script>
-<script async src="/js/loaders/fmPantiesLoader.js"></script>
+<!-- script src="/js/loaders/bonesLoader.js"></script -->
+<!-- script src="/js/loaders/skeletonLoader.js"></script -->
+<!-- script src="/js/loaders/fmBodyLoader.js"></script -->
+<!-- script src="/js/loaders/fmHairsLoader.js"></script -->
+<!-- script src="/js/loaders/fmSandalShoesLoader.js"></script -->
+<!-- script src="/js/loaders/fmBraLoader.js"></script -->
+<!-- script src="/js/loaders/fmPantiesLoader.js"></script -->
 
     <!-- JQUERY-UI-PANELS -->
 
@@ -506,10 +479,7 @@
     localPlayer.controller.direction = Math.PI;
     
 //  Show ground helper.
-//  groundHelper.visible = true;
-
-//  Background.
-    scene.background = new THREE.Color(0,0,0);
+    groundHelper.visible = true;
 
 //  Animate.
 
@@ -560,14 +530,12 @@
 <script>
 
 //  Load female.
-    var female_light_skin = "zZZdb9owFIb/S64xxE4cJ9zlA6sbZVvHRdVNFXKIC26JkyahE6r47zshTCWCTiii08QNx3n9cd5H59ivRpwlG2P4amiRSmPYhD3jRZUqXsFAVaxlzyjnog5+4h787nvGQmaprAqYaAzKJ6W1TAZXfBbA5GuxkcXMD8amPXsxSf+xhOVSUclCiVUJa7wa1Savt5rIcjmthE5EkUz2gp02h4/LqsrL4WCg+ipdrIv+PEsH+fe78O4p7j/mC9DJVJWlepGTd/VjfRM+25O9PssrlemyznW9VgnMCbmDQxy4KMI+R7btucinjoOcEJOQ2yb3bQcm7p2B/KaQ6sFJ59kqK4whdhhjBFOwSSWgNOu9xFxVYA+GwaVIlF4YQ/J2ZviAGXMcD7Q7/3aCxuuqELrMRSF1ZQwfwDMYK7L1YqllCac3+w54JCux2sdvq37SldRls+922+tu9FTRm9uV2c/1eUa39cdG2xFnDGOKMHM9MJr5yGUE/kUk8AIeuiOPtYwebWR5IaM9whwXWx18pm2f6/i00/fbnrEUqigP6qiJuxbSVT17IhO1Tmf8I0op+pXcXhfxnli8TvP36ba1x3QDn3tmZGFkuWaI7IBGKKB0hJjLrYA7IaE+bdGts7sQ3S71c4JrbcC0QWP2TdogjQtx2Bgh6twXC9G0xZolBZb4kixfxuMHGn8+i2Vbe8zSCQKP+H6ATDOiyB4RH1oiJYi4XkQ49phNrRZLSO0foWyGOpHMha6UPCzPPyNdiX5r5n8g1ZvR/Nb/Oj6Lalt7TJWFjonDyEXMieCi8zlDfmQ5yDItKNTIIwG1W1T36f3/ZMtl1uLaxF2pTms+q2m9xu4F45zRdr8tM704i2j1+OXHc/y8f478nWhbe+LpYlIaMhsj2wugTnkYIrhE62vV5T4fhZzYo/bTZZfaGUTJBdvuSWQLqRMJGxsPMq0/bX8D";
-    var female_mid_skin   = "zZZdb9owFIb/S64JxM6HY+7ifKgbZWvHRddNFXKIS0zJR+PQCVX8950QphJBJ4ToNOXq2O+xc95H5ySvWlwka234quU8E9qwDXvai1QyXsJCXa1ET1Mz3gQ/UQ+eh542F0Um6goStYF6knkuksFVNGWQfM3Xopp6bGRY0xcD9xcKjst4LSrJlwrOeNXqddlcNRYqndQ8T3iVjHeCrbaEzbSuSzUcDGRfZvNV1Z8V2aD8du/fP8X9RTkHncikUvJFjN/VL2buLGXfd/qirGWRq6bW1UomkBMin3oUGToKKdEtw2c68yKqE2KYbuQRDxkOJO6cgfomUOrem86KZVFpQ+QQQjCywSaZgNJo7uIzWYM9CBZTnsh8rg3x2zvDBiLEcShot/5tBa3XdcVzVfJK5LU2fATPYK0qVvM0Fwre3ug74JGo+XIXv536Ka9Frtp7N5ve+UZPpH17tzT6ZX6a0V39odHYpMgNiKtj17fBaOzr1MOejhDGxCTMMLDZMTpcC3UhoykmjovMM3y2uz438XGnHzY9LeWyUnt91MbnNtJVkz0WiVxl0+gjWin4ldxdV/GOWLzKyvfpdrWHdCn2PTCZ6VYYBrrlRECXuaHOWMAIMoOQ2mGHblPdheie0z9HuDYGTFo0Rt+wW6RxxfcHI0Rnz8WKt2OxYWkDS3RJli+j0aMdfz6JZVd7yJJZQegHMA0RJsASRpTOrMjSQ8eNiOXgiAa0wxJK+0co26WzSJY8r6XYb88/K+cSvWnzP5DqbTi7876OTqLa1R750AUEmwgzHWYthTZFFjSnaeuRw1wbRrLNgm6H7sr7/8mqtOhwbeNzqU4aPstJc8b2D8Y5YezepEU+P4lovfjy4zl+3v2O/J1oV3tI1ELEdkyP6tijzRcVBi9jFNgyJ/RD16Yo6hJtSzuBKL7g2D2KbC7yRMDF2qPImq3Nbw==";
-    var female_dark_skin  = "zZZdb9owFIb/S64JxM6HY+7ifKgbZWvHRddNFXKIS0zJR+PAhBD/fScNU4loJ4ToNOXq2O+xc95H5yRbLS6SjTbcajnPhDZsw562lkrGS1ioq5XoaWrGm+An6sHz0NPmoshEXUGiNlBPMs9FMriKpgySr/lGVFOPjQxrujZwf6HguIzXopJ8qeCMrVZvyuaqsVDppOZ5wqtkvBe8aEvYTOu6VMPBQPZlNl9V/VmRDcpv9/79U9xflHPQiUwqJddi/K5+MXNnKfu+1xdlLYtcNbWuVjKBnBD51KPI0FFIiW4ZPtOZF1GdEMN0I494yHAgce8M1DeBUg/edFYsi0obIocQgpENNskElEZzF5/JGuxBsJjyROZzbYhf3xk2bGKaxIXtxr6X/dbquuK5Knkl8lobPoJlsFYVq3maCwUvb/QdsEjUfLmPXw/9lNciV+21u13vfJ8n0r69Wxr9Mj/N567+2GdsUuQGxNWx69vgM/Z16mFPRwhjYhJmGNjs+BxuhLqQzxQTx0XmGT7bXZ+b+G2nH3Y9LeWyUgdt1Mbn9tFVkz0WiVxl0+gjOin4ldxdV/GeWLzKyvfpdrXHdCn2PTCZ6VYYBrrlRECXuaHOWMAIMoOQ2mGHblPdhegal+HaGDBp0Rh9w26RxhU/nIsQnT0WK95OxYalDSzRJVmuR6NHO/58Esuu9pgls4LQD2AYIkyAJXEcnVmRpYeOGxHLwRENaIcllPaPULZLZ5EseV5Lcdief1bOJXrT5n8g1dtwdud9HZ1Etat94zsXEGwizHSYtRTaFFnQnKatRw5zbRjJNgu6Hbov7/8nq9Kiw7WNz6U6afgsJ80ZLz8wzglj9yYt8vlJROvFlx/P8fP+b+TvRLvaY6IWIrZjelTHHm2+qDB4GaPAljmhH7o2RVGXaFvaCUTxBcfum8jmIk8EXKw9iqzZ2v0G";
-
+    var dna_mid  = "zZZdb9owFIb/S64JxM6HY+7ifKgbZWvHRddNFXKIS0zJR+PQCVX8950QphJBJ4ToNOXq2O+xc95H5ySvWlwka234quU8E9qwDXvai1QyXsJCXa1ET1Mz3gQ/UQ+eh542F0Um6goStYF6knkuksFVNGWQfM3Xopp6bGRY0xcD9xcKjst4LSrJlwrOeNXqddlcNRYqndQ8T3iVjHeCrbaEzbSuSzUcDGRfZvNV1Z8V2aD8du/fP8X9RTkHncikUvJFjN/VL2buLGXfd/qirGWRq6bW1UomkBMin3oUGToKKdEtw2c68yKqE2KYbuQRDxkOJO6cgfomUOrem86KZVFpQ+QQQjCywSaZgNJo7uIzWYM9CBZTnsh8rg3x2zvDBiLEcShot/5tBa3XdcVzVfJK5LU2fATPYK0qVvM0Fwre3ug74JGo+XIXv536Ka9Frtp7N5ve+UZPpH17tzT6ZX6a0V39odHYpMgNiKtj17fBaOzr1MOejhDGxCTMMLDZMTpcC3UhoykmjovMM3y2uz438XGnHzY9LeWyUnt91MbnNtJVkz0WiVxl0+gjWin4ldxdV/GOWLzKyvfpdrWHdCn2PTCZ6VYYBrrlRECXuaHOWMAIMoOQ2mGHblPdheie0z9HuDYGTFo0Rt+wW6RxxfcHI0Rnz8WKt2OxYWkDS3RJli+j0aMdfz6JZVd7yJJZQegHMA0RJsASRpTOrMjSQ8eNiOXgiAa0wxJK+0co26WzSJY8r6XYb88/K+cSvWnzP5DqbTi7876OTqLa1R750AUEmwgzHWYthTZFFjSnaeuRw1wbRrLNgm6H7sr7/8mqtOhwbeNzqU4aPstJc8b2D8Y5YezepEU+P4lovfjy4zl+3v2O/J1oV3tI1ELEdkyP6tijzRcVBi9jFNgyJ/RD16Yo6hJtSzuBKL7g2D2KbC7yRMDF2qPImq3Nbw==";
+    var dna_dark = "zZZdb9owFIb/S64JxM6HY+7ifKgbZWvHRddNFXKIS0zJR+PAhBD/fScNU4loJ4ToNOXq2O+xc95H5yRbLS6SjTbcajnPhDZsw562lkrGS1ioq5XoaWrGm+An6sHz0NPmoshEXUGiNlBPMs9FMriKpgySr/lGVFOPjQxrujZwf6HguIzXopJ8qeCMrVZvyuaqsVDppOZ5wqtkvBe8aEvYTOu6VMPBQPZlNl9V/VmRDcpv9/79U9xflHPQiUwqJddi/K5+MXNnKfu+1xdlLYtcNbWuVjKBnBD51KPI0FFIiW4ZPtOZF1GdEMN0I494yHAgce8M1DeBUg/edFYsi0obIocQgpENNskElEZzF5/JGuxBsJjyROZzbYhf3xk2bGKaxIXtxr6X/dbquuK5Knkl8lobPoJlsFYVq3maCwUvb/QdsEjUfLmPXw/9lNciV+21u13vfJ8n0r69Wxr9Mj/N567+2GdsUuQGxNWx69vgM/Z16mFPRwhjYhJmGNjs+BxuhLqQzxQTx0XmGT7bXZ+b+G2nH3Y9LeWyUgdt1Mbn9tFVkz0WiVxl0+gjOin4ldxdV/GeWLzKyvfpdrXHdCn2PTCZ6VYYBrrlRECXuaHOWMAIMoOQ2mGHblPdhegal+HaGDBp0Rh9w26RxhU/nIsQnT0WK95OxYalDSzRJVmuR6NHO/58Esuu9pgls4LQD2AYIkyAJXEcnVmRpYeOGxHLwRENaIcllPaPULZLZ5EseV5Lcdief1bOJXrT5n8g1dtwdud9HZ1Etat94zsXEGwizHSYtRTaFFnQnKatRw5zbRjJNgu6Hbov7/8nq9Kiw7WNz6U6afgsJ80ZLz8wzglj9yYt8vlJROvFlx/P8fP+b+TvRLvaY6IWIrZjelTHHm2+qDB4GaPAljmhH7o2RVGXaFvaCUTxBcfum8jmIk8EXKw9iqzZ2v0G";
 //  The "dna_fromDesktop" has fakepath texture urls from desktop:
 //  var dna_from_desktop = "zZZdb9owFIb/S64JxM6HE+5ikqgbZVvFRaVNFTLEELfko7FhQhX/fcdNphLBVsTYNOXq2O85jt9H5yQvxrxMd8bwxShYzo1hE/aMrZBivoYFVW94z5ALpoNvqAfPQ89Y8TLnqoZEYyCfRFHwdHCTzCgk37Idr2chHVvObGvh/qOEcjlTvBZsLaHGi6F2lT5qwmU2VaxIWZ1OWsGrttJlUy6fVFkNluyJV0xluv4UjppNRNp/rFag5LmQUmz55J2MKQgha7ZFbWJZKVEWUl97sxEpJMdoFIQBskwUB8R0rBE1aZgEJiGW7SchCZHlQWJrUlv44KUX5bqsjSHyCCEYueCYSEFp6bPYQihwCsFixlJRrIwhfnt52LAIch2PwL628lXQ2K5qVsiK1bxQxnAJ9sFaXW5WWcElvL3V98Aurti6jd+qfigUL2Rz7n7fO8/zTKlKDgcD0Rf5alP3F2U+mAr37n5t9avi2PH39cdGYztAfkR8E/sjF4zGIzMIcWgihDGxCbUsbHeMjndcXsnoABPPR/YFPrtdn3V82umHfc/ImKjlQUs18aU9daOzJzwVm3yW/GlXnSIWfU/vb+t5S2y+yatf0+1qj+kGeBSCydR04jgyHS8ButSPTUojSpAdxYEbd+jq212JrnUdrtqAaYPG6ltug3Res8MZCdHFI7JmzYTULF1gia7JcjseL935x7NYdrXHLKkTxaMIpiHCBFgSzzOpkzhm7PkJcTycBFHQYQlX+0com6WLSFasUIIftufPlUuJfmny/yLVu3hxH34en0W1qz3xoYsIthGmJszaANoUOdCctmsmHvVdGMkujbod2l7v/ycrs7LDtYkvpTrVfNZTXeP1Z8Y7Y+x+ycpidRZR9fjp6/P8uf0d+T3RrvaYqIOI69lhYOIw0F9UGLyUBsCWevEo9t0AJV2izdXOIIqvOHZPIlvxIuVwsLHkud7a/wA=";
 
-    localPlayer.fromDNA( female_mid_skin );
+    localPlayer.fromDNA( dna_dark );
 
 </script>
 
