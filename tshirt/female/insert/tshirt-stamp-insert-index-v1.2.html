@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <meta name="description" contents="{{description}}">
-    <!-- link rel="manifest" href="/manifest.json" -->
-    <title>female tshirt insert (index.html v1.2)</title>
+    <link rel="manifest" href="/manifest.json">
+    <title>tshirt stamp insert (index.html v1.2)</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootbox-dialoges.css">
     <link rel="stylesheet" href="/css/side-panels.css">
@@ -22,13 +22,38 @@
     <link rel="stylesheet" href="/css/anywhere3d.css">
     <link rel="stylesheet" href="/css/joystick.css">
     <link rel="stylesheet" href="/css/jquery.Jcrop.css">
-
+    
+            <!-- SOCKETCLUSTER -->
+    
+    <script src="/js/socketcluster.js"></script>
+    <script src="/js/sc-codec-min-bin.js"></script>
+    
                 <!-- JQUERY -->
+    
     <script src="/js/jquery.min.js"></script>
     <script src="/js/jquery-ui.js"></script>
     <script src="/js/jquery.Jcrop.js"></script>
     <script src="/js/jquery.lazy.js"></script>
     <script src="/js/jquery.lazy.plugins.js"></script>
+
+          <!-- INFLATE - DEFLATE -->
+
+    <script src="/js/rawinflate.js"></script>
+    <script src="/js/rawdeflate.js"></script>
+    <script src="/scripts/decode.js"></script>
+
+              <!-- ZARGODB -->
+
+    <script src="/js/zangodb.min.js"></script>
+    <script src="/js/anywheredb.js"></script>
+
+                <!-- W3 -->
+
+    <script src="/js/w3.js"></script>
+
+           <!-- USER SETTINGS -->
+
+    <script src="/js/userSettings.js"></script>
 
     <script>
     
@@ -40,10 +65,11 @@
         var componentsFolder = "/components/";
         var animationsFolder = "/animations/";
         $.ajaxSetup({ cache: false });
-    
+
     </script>
 
 </head>
+
 
 <body>
 
@@ -80,13 +106,9 @@
     .side-holder { width:84%; margin-bottom:10px; }    
 
     .modal-dialog {
-    /*  width:fit-content;  */
+        width:fit-content;
         max-width: 400px;
-    }
-
-    .alert-small {
-        max-width: 60%;
-        font-weight: 700;
+        min-width: 250px;
     }
 
 </style>
@@ -119,45 +141,20 @@
 
         <div id="left-side-content">
 
-            <div id="left-slot1-holder">
-                <li id="skybox-background" class="menu-helpers"><a>Skybox background</a>
-                    <script>
-                    //  skybox-background-button.html
-                        var skyboxButtonHolderSelector = "#left-slot1-holder";
-                        var skyboxBackgroundButtonComponent = componentsFolder + "skybox-background-button.html";
-                        $(skyboxButtonHolderSelector).load(skyboxBackgroundButtonComponent, function(response, status, xhr){
-                            debugMode && console.log("skybox-background-button:", status);
-                        });
-                    </script>                
-                </li>
-            </div>
+            <div id="left-slot1-holder"></div>
+            <div id="left-slot2-holder"></div>
+            <div id="left-slot3-holder"></div>
 
-            <div id="left-slot2-holder">
+            <div id="left-slot4-holder">
                 <style>
                     .helpers a { font-size:16px; font-weight:bold; cursor:pointer; text-decoration:none; } 
                 </style>
                 <h4>Avatar helpers:</h4>
-
-                <li id="skirt-only-helper" class="helpers"><a>Skirt only</a>
+                <li id="outfit-only-helper" class="helpers"><a>T-shirt only</a>
                     <script>
-                        var skirtOnlyHelperSelector = "#skirt-only-helper";
-                        $(skirtOnlyHelperSelector).on("click", function(){
-                            var skirt = "jZHLbsIwEEX/xes8HEOcxy5FilpVVJVYVgiZxCSm+CHboUIo/94JoaJL5NXM3DszPnNF7ltYj8orUkxyVN7jAJ2FE/sTZLwdeIBcw6bgKwngbQPUcS25txdwxGBRirfxa73bTO5d/fKO090Zk+jooJVknlvBTg78V+QvZpqz5q7/7LXq1vfqTWig0ntvXBnHIhKyG2zUaBkfhq74yT+io+lAtx+kWT+p5VI4J878Wb02XmjlJiLDIFrw4IJmVU2SkJJ0FS6LrA6LZJWHS1rVeUXpiuQLMN75/UH4961Gn7RFZUKzLCNJCjBFC1I8DWON8AAxgWTPWqE6VJLH0lDAmNIFKQJ0o3wTzBfxlilnmOUKzncAunwGs5kvhSOcPhq9Kc+Vm0eN43acDqhaDluhA5eTYfwF";
-                            localPlayer.fromDNA( skirt );
-                            cameraControls.radius = 24;
-                            cameraControls.offset.y = 14
-                            localPlayer.outfit.AnimationsHandler.stop();
-                        });
-                    </script>
-                </li>
-                <li id="tshirt-only-helper" class="helpers"><a>T-shirt only</a>
-                    <script>
-                        var tshirtOnlyHelperSelector = "#tshirt-only-helper";
-                        $(tshirtOnlyHelperSelector).on("click", function(){
-                            var tshirt = "jVHLbsIwEPwXn/NySGLILRRQpYoT3CqETGwSt/FDtoOEUP69a6AVx8qn3Znxzs7ekHe9sB7VN6So5Kj+bUToIpw4DdDyduQRci0NxSeO4B0i1HEtubdXkKTuWyjFWfq+Oe7v8uNm+ZGVx0uGky8Hf0nquRV0cPDBDfmrCZO23PU7TxWjlm2fhDvXANh7b1ydpiIRshtt0mqZFnsuV0udGNUB7zRKs/0nVxsvtHJhzXEUDDRF05BZnlVxQ8pVXCzWm3i+zNdxVbwVZLHGuJpVIHyG8rfYi89WD9qiGleEkByXkJBgwM3CNNoKD8lgaPaUCfBQ5xHiUjgnLkAqyXxB5gXAIbk7/kjZW6qcoZYruMkZAoOe1WPXK+7AfpbAHIidDi91CGL3uE6WZOU0HaZwHsU42ENnLgM0/QA=";
-                            cameraControls.radius = 24;
-                            cameraControls.offset.y = 20.5;
-                            localPlayer.outfit.fromDNA( tshirt );
+                        var outfitOnlyHelperSelector = "#outfit-only-helper";
+                        $(outfitOnlyHelperSelector).on("click", function(){
+                            localPlayer.outfit.remove("hairs", "body", "shoes", "skirt");
                             localPlayer.outfit.AnimationsHandler.stop();
                         });
                     </script>
@@ -166,68 +163,53 @@
                     <script>
                         var resetAvatarHelperSelector = "#reset-avatar-helper";
                         $(resetAvatarHelperSelector).on("click", function(){
-                            cameraControls.radius = 24;
-                            cameraControls.offset.y = 20
-                            localPlayer.fromDNA( female_tshirt_blank );
                             localPlayer.outfit.fromDNA( female_tshirt_blank );
                         });
                     </script>
                 </li>
                 <hr>
                 <h4>Animation helpers:</h4>
+                <li id="animation-stop-helper" class="helpers"><a>Stop animation</a>
+                    <script>
+                        var animationStopHelperSelector = "#animation-stop-helper";
+                        $(animationStopHelperSelector).on("click", function(){
+                            localPlayer.outfit.AnimationsHandler.stop();
+                        });
+                    </script>
+                </li>
                 <li id="animation-play-helper" class="helpers"><a>Play animation</a>
                     <script>
                         var animationPlayHelperSelector = "#animation-play-helper";
-                        var animationStopHelperSelector = "#animation-stop-helper";
                         $(animationPlayHelperSelector).on("click", function(){
-                            localPlayer.outfit.AnimationsHandler.refresh();
-                        });
-                        $(animationPlayHelperSelector).on("click", function(){
-                            $(animationStopHelperSelector)[0].active = true;
-                            $(animationStopHelperSelector).find("a").text("Pause animation");
-                        });
-                    </script>
-                </li>
-                <li id="animation-stop-helper" class="helpers"><a>Pause animation</a>
-                    <script>
-                        var animationStopHelperSelector = "#animation-stop-helper";
-                        $(animationStopHelperSelector)[0].active = true;
-                        $(animationStopHelperSelector).on("click", function(){
-                            this.active = !this.active;
-                        });
-                        $(animationStopHelperSelector).on("click", function(){
-                            if ( !this.active )
-                                localPlayer.outfit.AnimationsHandler.stop();
-                            else
-                                localPlayer.outfit.AnimationsHandler.refresh();
-                        });
-                        $(animationStopHelperSelector).on("click", function(){
-                            if ( !this.active )
-                                $(this).find("a").text("Resume animation");
-                            else
-                                $(this).find("a").text("Pause animation");
+                            localPlayer.outfit.AnimationsHandler.refresh()
                         });
                     </script>
                 </li>
             </div>
 
-            <div id="left-slot3-holder">
+            <div id="left-slot5-holder">
                 <!-- display-helpers.html -->
             </div>
 
-            <div id="left-slot4-holder"></div>
-            <div id="left-slot5-holder"></div>
-            <div id="left-slot6-holder"></div>
-            <div id="left-slot7-holder"></div>
-            <div id="left-slot8-holder"></div>
-            <div id="left-slot9-holder"></div>
-            <div id="left-slot10-holder"></div>
+            <div id="left-slot6-holder" class="left-slot" style="margin-bottom:30px;">
+                <li id="skybox-background" class="menu-helpers"><a>Skybox background</a>
+                    <script>
+                    //  skybox-background-button.html
+                        var skyboxButtonHolderSelector = "#left-slot6-holder";
+                        var skyboxBackgroundButtonComponent = componentsFolder + "skybox-background-button.html";
+                        $(skyboxButtonHolderSelector).load(skyboxBackgroundButtonComponent, function(response, status, xhr){
+                            debugMode && console.log("skybox-background-button:", status);
+                        });
+                    </script>                
+                </li>
+            </div>
 
             <div class="twitter-holder">
                 <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-url="http://anywhere3d.com" data-lang="en" data-show-count="false">Tweet</a>
                 <a href="https://twitter.com/anywhere3d?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-screen-name="false" data-lang="en" data-show-count="false">Follow</a>
                 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
             </div>
+
         </div>
     </div>
 
@@ -240,45 +222,96 @@
                 <li id="action-controls" class="menu-helpers"><a>Action Controls</a></li>
             </div>
 
-            <div id="right-slot1-holder" class="side-holder"></div>
-            <div id="right-slot2-holder" class="side-holder"></div>
-            <div id="right-slot3-holder" class="side-holder"></div>
-            <div id="right-slot4-holder" class="side-holder"></div>
-            <div id="right-slot5-holder" class="side-holder"></div>
-            <div id="right-slot6-holder" class="side-holder"></div>
-            <div id="right-slot7-holder" class="side-holder"></div>
-            <div id="right-slot8-holder" class="side-holder"></div>
-            <div id="right-slot9-holder" class="side-holder"></div>
-            <div id="right-slot10-holder" class="side-holder"></div>
+            <div id="slot1-holder" class="side-holder">
+                <script>
+                //  outfit-tshirt-stamp-editor-button.html
+                    var tshirtStampEditorHolderSelector = "#slot1-holder";
+                    var tshirtStampEditorButtonComponent = componentsFolder + "tshirt-stamp-editor-button.html";
+                    $(tshirtStampEditorHolderSelector).load(tshirtStampEditorButtonComponent, function(response, status, xhr){
+                        debugMode && console.log("tshirt-stamp-editor-button:", status);
+                    });
+                </script>
+            </div>
+
+            <div id="slot2-holder" class="side-holder">
+                <script>
+                //  outfit-tshirt-editor-button.html
+                    var outfitTshirtEditorHolderSelector = "#slot2-holder";
+                    var outfitTshirtEditorButtonComponent = componentsFolder + "outfit-tshirt-editor-button.html";
+                    $(outfitTshirtEditorHolderSelector).load(outfitTshirtEditorButtonComponent, function(response, status, xhr){
+                        debugMode && console.log("outfit-tshirt-editor-button:", status);
+                    });
+                </script>
+            </div>
+
+            <div id="slot2A-holder" class="side-holder">
+                <script>
+                //  outfit-skirt-editor-button.html
+                    var outfitSkirtEditorHolderSelector = "#slot2A-holder";
+                    var outfitSkirtEditorButtonComponent = componentsFolder + "outfit-skirt-editor-button.html";
+                    $(outfitSkirtEditorHolderSelector).load(outfitSkirtEditorButtonComponent, function(response, status, xhr){
+                        debugMode && console.log("outfit-skirt-editor-button:", status);
+                    });
+                </script>
+            </div>
+
+            <div id="slot3-holder" class="side-holder">
+                <script>
+                //  avatar-skin-editor-button.html
+                    var avatarEditorHolderSelector = "#slot3-holder";
+                    var skinEditorButtonComponent = componentsFolder + "avatar-skin-editor-button.html";
+                    $(avatarEditorHolderSelector).load(skinEditorButtonComponent, function(response, status, xhr){
+                        debugMode && console.log("avatar-skin-editor-button:", status);
+                    });
+                </script>
+            </div>
+
+            <div id="slot4-holder" class="side-holder">
+                <script>
+                //  tshirt-stamp-upload-button.html
+                    var tshirtStampUploadHolderSelector = "#slot4-holder";
+                    var tshirtStampUploadButtonComponent = componentsFolder + "tshirt-stamp-upload-button.html";
+                    $(tshirtStampUploadHolderSelector).load(tshirtStampUploadButtonComponent, function(response, status, xhr){
+                        debugMode && console.log("tshirt-stamp-upload-button:", status);
+                    });
+                </script>
+            </div>
+
+            <div id="slot5-holder" class="side-holder">
+                <script>
+            /*
+                //  outfit-tshirt-upload-button.html
+                    var outfitTshirtUploadHolderSelector = "#slot5-holder";
+                    var outfitTshirtUploadButtonComponent = componentsFolder + "outfit-tshirt-upload-button.html";
+                    $(outfitTshirtUploadHolderSelector).load(outfitTshirtUploadButtonComponent, function(response, status, xhr){
+                        debugMode && console.log("outfit-tshirt-upload-button:", status);
+                    });
+            */
+                </script>
+            </div>
+
+            <div id="slot6-holder"></div>
+            <div id="slot7-holder"></div>
+            <div id="slot8-holder"></div>
+            <div id="slot9-holder"></div>
+
+            <div id="slot10-holder" class="side-holder">
+                <script>
+                //  snapshot-crop-button.html
+                    var snapshotHolderSelector = "#slot10-holder";
+                    var snapshotCropButtonComponent = componentsFolder + "snapshot-crop-button.html";
+                    $(snapshotHolderSelector).load(snapshotCropButtonComponent, function(response, status, xhr){
+                        debugMode && console.log("snapshot-crop-button:", status);
+                    });
+                </script>
+            </div>
+
 
         </div>
     </div>
 
 </section>
 
-        <!-- SOCKETCLUSTER -->
-
-<script src="/js/socketcluster.js"></script>
-<script src="/js/sc-codec-min-bin.js"></script>
-
-
-       <!-- INFLATE - DEFLATE -->
-
-<script src="/js/rawinflate.js"></script>
-<script src="/js/rawdeflate.js"></script>
-<script src="/scripts/encode.js"></script>
-<script src="/scripts/decode.js"></script>
-
-            <!-- ZARGODB -->
-
-<script src="/js/zangodb.min.js"></script>
-<script src="/js/anywheredb.js"></script>
-
-         <!-- LOCAL STORAGE -->
-
-<script src="/js/store2.js"></script>
-<script src="/js/store.on.js"></script>
-<script src="/js/store.array.js"></script>
 
         <!-- LOCAL FORAGE -->
 
@@ -301,15 +334,13 @@
 
 </script>
 
-               <!-- W3 -->
+      <!-- LOCAL STORAGE -->
 
-<script src="/js/w3.js"></script>
+<script src="/js/store2.js"></script>
+<script src="/js/store.on.js"></script>
+<script src="/js/store.array.js"></script>
 
-          <!-- USER SETTINGS -->
 
-<script src="/js/userSettings.js"></script>
-
-        <!-- LIBRARIES -->
 
 <script src="/js/validator.min.js"></script>
 <script async src="/js/alerts.js"></script>
@@ -323,7 +354,6 @@
 <script async src="/js/sharer.js"></script>
 <script async src="/js/helpers.js"></script>
 <script async src="/js/side-panels.js"></script>
-<script async src="/js/jquery.countdown.js"></script>
 
         <!-- THREEJS -->
 
@@ -462,140 +492,44 @@
 
 <script src="/js/AW3D.js"></script>
 <script src="/js/PlayerController.js"></script>
+<script src="/js/PlayerLabel.js"></script>
 <script src="/js/KeyInputControls.js"></script>
 <script src="/js/JoystickControls.js"></script>
-
-<script src="/js/PlayerLabel.js"></script>
-
 <script src="/js/OutfitLoader.js"></script>
-<script src="/js/loaders/bonesLoader.js"></script>
 <script src="/js/loaders/animationsLoader.js"></script>
-<!-- script src="/js/loaders/skeletonLoader.js"></script -->
+<script src="/js/loaders/bonesLoader.js"></script>
+
+   <!-- OUTFIT LOADERS -->
 
 <script async src="/js/loaders/fmBodyLoader.js"></script>
 <script async src="/js/loaders/fmHairsLoader.js"></script>
-<script async src="/js/loaders/fmDressLoader.js"></script>
-<script async src="/js/loaders/fmSandalShoesLoader.js"></script>
-<script async src="/js/loaders/fmBraLoader.js"></script>
-<script async src="/js/loaders/fmPantiesLoader.js"></script>
+<script async src="/js/loaders/fmTshirtLoader.js"></script>
 <script async src="/js/loaders/fmSkirtLoader.js"></script>
-<script async src="/js/loaders/fmSneakersLoader.js"></script>
-<script async src="/js/loaders/fmTailDressLoader.js"></script>
-<script async src="/js/loaders/fmTrousersLoader.js"></script>
-<script async src="/js/loaders/fmTshirtLoader_mtl.js"></script>
+<script async src="/js/loaders/fmSandalShoesLoader.js"></script>
 
 <script async src="/js/loaders/hmBodyLoader.js"></script>
 <script async src="/js/loaders/hmHairsLoader.js"></script>
 <script async src="/js/loaders/hmTshirtLoader.js"></script>
 <script async src="/js/loaders/hmTrousersLoader.js"></script>
-<script async src="/js/loaders/hmBoxersLoader.js"></script>
 <script async src="/js/loaders/hmSneakersLoader.js"></script>
 
-    <!-- COMPONENTS -->
+
+    <!-- JQUERY-UI-PANELS -->
+
+<script src="/js/form-panel.js"></script>
+<script src="/js/editor-panel.js"></script>
+<script src="/js/snapshot-panel.js"></script>
+<script src="/js/dialogTargetEventListeners.js"></script>
+
+       <!-- COMPONENTS -->
 
 <script>
 //  display-helpers.html
     var displayHelpersSelector = "#display-helpers";
-    var displayHelpersHolderSelector = "#left-slot3-holder";
+    var displayHelpersHolderSelector = "#left-slot5-holder";
     var displayHelpersComponent = componentsFolder + "display-helpers.html";
     $(displayHelpersHolderSelector).load(displayHelpersComponent, function(response, status, xhr){
         debugMode && console.log("display-helpers:", status);
-    });
-</script>
-
-<script>
-//  outfit-tshirt-editor-button.html
-    var outfitTshirtEditorHolderSelector = "#right-slot1-holder";
-    var outfitTshirtEditorButtonComponent = componentsFolder + "outfit-tshirt-editor-button.html";
-    $(outfitTshirtEditorHolderSelector).load(outfitTshirtEditorButtonComponent, function(response, status, xhr){
-        debugMode && console.log("outfit-tshirt-editor-button:", status);
-    });
-</script>
-
-<script>
-//  outfit-tshirt-catalog-button.html
-    var outfitTshirtCatalogHolderSelector = "#right-slot2-holder";
-    var outfitTshirtCatalogButtonComponent = componentsFolder + "outfit-tshirt-catalog-button.html";
-    $(outfitTshirtCatalogHolderSelector).load(outfitTshirtCatalogButtonComponent, function(response, status, xhr){
-        debugMode && console.log("outfit-tshirt-catalog-button:", status);
-    });
-</script>
-
-<script>
-/*
-//  outfit-tshirt-upload-button.html
-    var outfitTshirtUploadHolderSelector = "#right-slot2-holder";
-    var outfitTshirtUploadButtonComponent = componentsFolder + "outfit-tshirt-upload-button.html";
-    $(outfitTshirtUploadHolderSelector).load(outfitTshirtUploadButtonComponent, function(response, status, xhr){
-        debugMode && console.log("outfit-tshirt-upload-button:", status);
-    });
-*/
-</script>
-
-<script>
-/*
-//  fabric-catalog-female-tshirt-button.html
-    var fabricCatalogFemaleTshirtHolderSelector = "#right-slot2-holder";
-    var fabricCatalogFemaleTshirtButtonComponent = componentsFolder + "fabric-catalog-female-tshirt-button.html";
-    $(fabricCatalogFemaleTshirtHolderSelector).load(fabricCatalogFemaleTshirtButtonComponent, function(response, status, xhr){
-        debugMode && console.log("fabric-catalog-female-tshirt-button:", status);
-    });
-*/
-</script>
-
-<script>
-//  outfit-skirt-catalog-button.html
-    var outfitSkirtCatalogHolderSelector = "#right-slot3-holder";
-    var outfitSkirtCatalogButtonComponent = componentsFolder + "outfit-skirt-catalog-button.html";
-    $(outfitSkirtCatalogHolderSelector).load(outfitSkirtCatalogButtonComponent, function(response, status, xhr){
-        debugMode && console.log("outfit-skirt-catalog-button:", status);
-    });
-</script>
-
-<script>
-//  outfit-skirt-batch-insert-button.html
-    var outfitTshirtInsertHolderSelector = "#right-slot4-holder";
-    var outfitTshirtInsertButtonComponent = componentsFolder + "outfit-skirt-batch-insert-button.html";
-    $(outfitTshirtInsertHolderSelector).load(outfitTshirtInsertButtonComponent, function(response, status, xhr){
-        debugMode && console.log("outfit-skirt-batch-insert:", status);
-    });
-</script>
-
-<script>
-/*
-//  outfit-tshirt-insert-button.html
-    var outfitTshirtInsertHolderSelector = "#right-slot4-holder";
-    var outfitTshirtInsertButtonComponent = componentsFolder + "outfit-tshirt-insert-button.html";
-    $(outfitTshirtInsertHolderSelector).load(outfitTshirtInsertButtonComponent, function(response, status, xhr){
-        debugMode && console.log("outfit-tshirt-insert-button:", status);
-    });
-*/
-</script>
-
-<script>
-//  outfit-tshirt-batch-insert-button.html
-    var outfitTshirtBatchInsertHolderSelector = "#right-slot5-holder";
-    var outfitTshirtBatchInsertButtonComponent = componentsFolder + "outfit-tshirt-batch-insert-button.html";
-    $(outfitTshirtBatchInsertHolderSelector).load(outfitTshirtBatchInsertButtonComponent, function(response, status, xhr){
-        debugMode && console.log("outfit-tshirt-batch-insert-button:", status);
-    });
-</script>
-
-<script>
-//  texture-tshirt-map-options-button.html
-    var textureTshirtMapOptionsHolderSelector = "#right-slot6-holder";
-    var textureTshirtMapOptionsButtonComponent = componentsFolder + "texture-tshirt-map-options-button.html";
-    $(textureTshirtMapOptionsHolderSelector).load(textureTshirtMapOptionsButtonComponent, function(response, status, xhr){
-        debugMode && console.log("texture-tshirt-map-options-button:", status);
-    });
-</script>
-
-<script>
-//  snapshot-crop-button.html
-    var snapshotHolderSelector = "#right-slot10-holder";
-    var snapshotCropButtonComponent = componentsFolder + "snapshot-crop-button.html";
-    $(snapshotHolderSelector).load(snapshotCropButtonComponent, function(response, status, xhr){
-        debugMode && console.log("snapshot-crop-button:", status);
     });
 </script>
 
@@ -622,15 +556,6 @@
 //  Background.
     scene.background = new THREE.Color(0,0,0);
 
-//  ClearTimeout ids.
-    INTERVAL_IDS = [];
-
-//  Downcount uploads.
-    countdownReset();
-    function countdownReset(){
-        countdown = 50;
-        return countdown;
-    }
 
 //  Animate.
 
@@ -678,32 +603,19 @@
 
 </script>
 
-
 <script>
 
 //  Load female.
 
 //  var female_tshirt_blank = "tZZrb9owFIb/Sz5jiJM4dvhmO7G6C9U2qnXdNFWh8cAtuTQOnaqq/30nBKmkZR1iVHwIx359ex8d+zw4szK7d8YPTpHm2hl34cC5M9bMltDQ1Cs9cOxV2gY/8AB+PwfOXJe5bmoY6IzsjSkKnY1O1KWAwR/Te11fcvHBDS7vXG94bWG6PG10bdKlhTkenOa+apeaaLuYNmmRpXU22QjW2go6F01T2fFoZIYmn6/q4VWZj6ovF/LiZja8ruag07mx1tzpyV/18bfZyXu63OjLqjFlYduzrlYmgzFShVhiwVCMuUJBEDHESRiiUGJPqsBVPAhh4MYZON8Ujrq106tyWdbOGIeUUg8TsMlkoHTbtdIr04A9GBoXaWaKuTP2nvYMHZjSMIxAu/ZvLei8buq0sFVa66Jxxr/AM2iry9V8UWgLu3eHIXikm3S5iZ9mfVc0urDduo+Pg8ONnhry+XzpDqtiP6P7+pdGB7GiFGOCMGURGE05YtSDf7EnIqEkSyLaMzq51/ZIRkceDRn2D/CZ9H1u491O/3wcOIvU1HYrj7r40EQ6aUdPdGZW+aV6i1SKf2fnH+vZhthslVevpFFP+5Ku4CpyYx8jn7kSBYLESBCSIMqUL1QoPcJJj257uiPRPSR/dnBtDZh2aNyhSzqkjV2Yutliumk4FOrZeviaJwGe/jF5Bmc6j0W5F8++dke2Sk6ol3CEYw48kzhGPJIJEpC9LJFJFMesx7M72JGI0jCilOE34vofl6LB39NpJfeyuK99aTERkYsTHqOQCxcFxA8RYx5HAZWYEk9RLsIdFqu6LI7lMyPEdw96f173GYHRmzsRZu7lTxcfmj7Tm+3s+ddt+GlRFvO9uDJ7OpnlXzdVwutc+9qXXLGMvEhQH3nwQYFkPjx0RCB4/lzGpYyZlzyvKI6WOXuy3HnX2UWpt5+vLj4YVZtWy2k7x7oSDI8KrLk+/X47u90LWF+7owR0CZE0wCiIBEGBkhJBMdKWJ0xxlUjlBc+ArY+2R3HivTWyuS4yDQs7v3Tedj3+AQ==";
-//  var female_tshirt_blank = "xZZdT9swFIb/S67r1k7i2Omd7cRiG0XbisbYhFBKTGtoPohTJoT473OaSjS0QFcVTb1Ij3389T7n+PjRmRTpgzN8dPIkU86wNXvOvTZ6MrcNdbVQPcdcJY3xG/Xs76LnTFWRqbqyA52BudV5rtLBkbzkdvBx8qCqS8a/QP/yHrr9G2Ony5JaVTqZGzvHo1M/lM1SI2Vm4zrJ06RKRyuHpW9pO2d1XZrhYKD7Opsuqv5VkQ3K7+fi/HbSvymn1k9l2hh9r0av+kc/J0efyXzlX5S1LnLTnHWx0KkdI2SABOIURIhJ4PshBQwHAQgEcoX0oWR+YAeulLHnG9ujru30qpgXlTNEASHERdjKpFPrCZu1kitdW3mQbZwlqc6nztB93rMzDF0SUOTZ7ka+ZX8rdV0luSmTSuW1M7y2ktm2qlhMZ7kydvOwH1iJVJ3MV/bzpJ/yWuWmXfbpqbe/zmONv53NYb/Md9O567+psx9JQhDCABEaWp0JA5S49l/k8pBLQeOQdHSOH5T57zrjrs6NvV3pi6eeM0t0ZdbSqLX3zaOjZvRIpXqRXcqPyKToT3p2XE1WxCaLrHwjizq+m3Q5kyGMPAQ8CgXwOY4AxzgGhEqPy0C4mOEO3eZ0B6ILD8O1EWDcooF9iFuktZnpql5jumrYF+rpcviSJ7Y8vX/n+TYn/1RlES9ez0LBMHFjBlDELKc4igALRQy4zUoaiziMItrh1G74UHnoQ+qF4Qfxevey25QD8xCimEUgYBwCH3sBoNRlwCcCEexKwniwRQ5ZFfmhNKEYezA8SAy3IWvn6URsa+8bsOPb9Xh97/75Oivy6U6XDzUno0n2Y1WW3w7qru8mRSRCN+TEA679AF9Qz5YWzIEtOJAyISLqxi9L+MFiekdyW28XMyvUesFo7b1RNQE/HzdzLJ9ewUGB1Tcnv+4mdzsB6/pueXNBjAXxEfBDjoEvhQC2/DcPAiqZjIV0/RfAlkfb4TngfjSyqcpTZRd2rlXWdD39BQ==";
-    var female_tshirt_blank = "tZbRbpswFIbfhes4scHYkDsIoG5ttnap1HVTFZHgBrfBUOx0iqq8+0xgalCzFqFUuTqH/9g+/6fj+MVY5MnWGL8YIs6YMa7DgfHMJV+sdUKVGzYw5DKugt9ooH93A2PF8oypUhcaI/nIhWDJ6Cya+7r4It6ycu755xDPn6E5fJB6uSxWrOTxWuo1Xgy1LaqtpkymMxWLJC6TaSPYawv9MVWqkOPRiA95ttqUw2WejYoft5Pbx8XwoVhpHcu4lPyZTf+rD34uzr7SdaPPC8VzIateNxue6BrsWz5yLQdAzyEAIwSB44QhwBDByAv8CFmuLmyc0f3NdKsHJ13m67w0xohQSk1ka5t4opWw2itecqXtQTqZxgkXK2Nsvp5Zf0CUEuJq7d6/vaD2WpWxkEVcMqGM8b32TOfKfLNKBZP69HBItEdMxesmfl31i1BMyHrf3W7Q3+gZt69u1nBYiG5Gt/Vvjfag5fiOEwAnNDHApmMCX3cPItuHBJs6idtGh1smT2S0a1LiIKuHz3bb5yo+7vTdbmCkMS/lwRzVcd9BOquqpyzhm2wefcYoBX+Sm4ty0RBbbLLinTFqad/SNXFI3Ig4AEdY040iAvxJ4IFAz5KDbOITilp0q+4+pmt2odtnfo5wrQyY1WjgENo10iIWirNDqP8yfbFe1vX1FVlxtTVXdEquV+Hyxvt+3olrW3vkegxty8UwABB6FsAWRsAPJwhgaqHI8vzIRqTFtWnvRIP7Edo61Yuskikv1QHYJtGX6/W+/HOI4muWBX7eiWhbe4So51HLhAR41A4AdsMIOL4ZAoInmLohQsRqE60bOxFQmzoudfAnTqxM89a81nFfqrOK0npWrbF/z5AOl/BlmotVJ67q4duvp8VT8zh5n2tb+5ZrpP9BoQ1DEEKkr2EKLeASYgNo4RD6NraoZ7cfMvvWOkzqKS/ho8hWTCRMb2zcs6z6tPsL";
+    var female_tshirt_blank = "xZZdT9swFIb/S67r1k7i2Omd7cRiG0XbisbYhFBKTGtoPohTJoT473OaSjS0QFcVTb1Ij3389T7n+PjRmRTpgzN8dPIkU86wNXvOvTZ6MrcNdbVQPcdcJY3xG/Xs76LnTFWRqbqyA52BudV5rtLBkbzkdvBx8qCqS8a/QP/yHrr9G2Ony5JaVTqZGzvHo1M/lM1SI2Vm4zrJ06RKRyuHpW9pO2d1XZrhYKD7Opsuqv5VkQ3K7+fi/HbSvymn1k9l2hh9r0av+kc/J0efyXzlX5S1LnLTnHWx0KkdI2SABOIURIhJ4PshBQwHAQgEcoX0oWR+YAeulLHnG9ujru30qpgXlTNEASHERdjKpFPrCZu1kitdW3mQbZwlqc6nztB93rMzDF0SUOTZ7ka+ZX8rdV0luSmTSuW1M7y2ktm2qlhMZ7kydvOwH1iJVJ3MV/bzpJ/yWuWmXfbpqbe/zmONv53NYb/Md9O567+psx9JQhDCABEaWp0JA5S49l/k8pBLQeOQdHSOH5T57zrjrs6NvV3pi6eeM0t0ZdbSqLX3zaOjZvRIpXqRXcqPyKToT3p2XE1WxCaLrHwjizq+m3Q5kyGMPAQ8CgXwOY4AxzgGhEqPy0C4mOEO3eZ0B6ILD8O1EWDcooF9iFuktZnpql5jumrYF+rpcviSJ7Y8vX/n+TYn/1RlES9ez0LBMHFjBlDELKc4igALRQy4zUoaiziMItrh1G74UHnoQ+qF4Qfxevey25QD8xCimEUgYBwCH3sBoNRlwCcCEexKwniwRQ5ZFfmhNKEYezA8SAy3IWvn6URsa+8bsOPb9Xh97/75Oivy6U6XDzUno0n2Y1WW3w7qru8mRSRCN+TEA679AF9Qz5YWzIEtOJAyISLqxi9L+MFiekdyW28XMyvUesFo7b1RNQE/HzdzLJ9ewUGB1Tcnv+4mdzsB6/pueXNBjAXxEfBDjoEvhQC2/DcPAiqZjIV0/RfAlkfb4TngfjSyqcpTZRd2rlXWdD39BQ==";
     localPlayer.fromDNA( female_tshirt_blank );
 
-//  localPlayer.outfit.add({"skirt": Avatars["fmSkirt"]});
-
 //  CameraControls.
+    cameraControls.offset.set(0,20.5,0);
     cameraControls.radius = 24;
-    cameraControls.offset.y = 20;
-
 //  Update vertical offset output value on startup.
     $("#camera-offset-output").val( cameraControls.offset.y );
 
 </script>
 
-
-
-<script src="/js/editor-panel.js"></script>
-<script src="/js/snapshot-panel.js"></script>
-<script src="/js/dialogTargetEventListeners.js"></script>
-
-</body>
-</html>
