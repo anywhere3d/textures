@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/icons/favicon.ico" type="image/x-icon">
+    <meta name="description" contents="{{description}}">
+    <title>Dress-D3: insert texture with mask (v0.6)</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootbox-dialoges.css">
+    <link rel="stylesheet" href="/css/side-panels.css">
+    <link rel="stylesheet" href="/css/messg.css" >
+    <link rel="stylesheet" href="/css/spectrum.css">
+    <link rel="stylesheet" href="/css/colorpicker.css">
+    <link rel="stylesheet" href="/css/spinner.css">
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+    <link rel="stylesheet" href="/css/alerts.css">
+    <link rel="stylesheet" href="/css/panel-ui.css">
+    <link rel="stylesheet" href="/css/anywhere3d.css">
+
+    <script src="/js/w3.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery-ui.js"></script>
+    <script> debugMode = true;</script>
+
+</head>
+
+<body>
+
+<style>
+    .navbar-nav > li > a.menu-item {font-weight:bold;}
+</style>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+
+    <div class="container">
+
+        <div class="navbar-header">
+            <div class="navbar-brand">
+                <a href="/" class="navbar-caption" title="anywhere3d.com">anywhere3d</a>
+            </div>
+            <a class="navbar-logo pull-left"><img src="https://i.imgur.com/09bC4Q0.png" alt="anywhere3d logo"></a>
+            <ul class="nav navbar-nav navbar-right pull-left">
+                <li class="first"><div></div></li>
+            </ul>
+        </div>
+        
+        <ul class="nav navbar-nav navbar-right"></ul>
+
+    </div>
+
+</nav>
+
+<style>
+    canvas { display:block !important; }
+    #msg-box7-z { background-color:#eee; padding-top:0px; padding-bottom:0px; overflow:hidden; }
+    #render-container { opacity:1; background-color:#eee; width:100%; height:660px; position:absolute; top:140px; overflow:hidden; }
+    #left-side { top:50px; bottom:0px; }
+    #left-side-content { overflow-y:auto; padding-bottom:0px; }
+    #icon-img { margin-left:20px; float:right; }
+    .img-icon { width:32px; height:32px; }
+    .lock-focus { position:absolute; bottom:100px; right:10px; }
+</style>
+
+<style>
+    .center-vertical {height: 100vh;}
+    .center-vertical form {top: 50%;margin: auto;position: relative;
+      -webkit-transform: translateY(-50%);-ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+    }
+    .form-horizontal .form-buttons {float: right;}
+    .form-horizontal .form-buttons .btn {width: 80px;margin-left: 6px;}
+    .form-horizontal input,
+    .form-horizontal select {height: 30px;}
+    label.control-label.col-sm-2, 
+    label.control-label.col-sm-3 { padding-top:5px; }
+    .col-sm-4, .col-sm-10 { margin-bottom:10px; }
+    #clear-form, #create-preview,
+    input.pull-right + input.pull-right { margin-right:10px;}
+</style>
+
+<section class="mbr-section mbr-after-navbar" id="msg-box7-z">
+
+    <div class="container">
+        
+        <div class="col-sm-6 center-vertical">
+            <div id="render-container"></div>
+            <div class="lock-focus">
+                Lock&nbsp;to&nbsp;center&nbsp;<input type="checkbox" id="controls-focus">
+            </div>
+        </div>
+
+        <div class="col-sm-6 center-vertical">
+
+            <form class="well" id="dress3-form" action="" method="post">
+
+                <h2>Dress-D3 texture insert</h2>
+                
+                <div class="form-group">
+                    <h6>Please insert a title for the texture:</h6>
+                    <label class="control-label col-sm-2">Name:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="name-tf" name="name" required autofocus>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Asset:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="asset" value="HF DressLayer FemaleBodyKit05 v03" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Gender:</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" id="gender-list" name="gender" required readOnly>
+                            <option value="">Please select a gender:</option>
+                            <option value="male">male</option>
+                            <option value="female" selected>female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Category:</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" id="category-list" name="category" required readOnly>
+                            <option value="">Please select a category:</option>
+                            <option value="dress" selected>dress</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="form-group">
+                    <h6>Please select a type for the texture:</h6>
+                    <label class="control-label col-sm-2">Type:</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" id="type-list" name="type" required>
+                            <option value="">Please select a type:</option>
+                            <option value="map" selected>map</option>
+                            <option value="bumpMap">bump</option>
+                            <!-- option value="normalMap">normal</option -->
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Icon:</label>
+                    <h6 class="col-sm-10">Please insert the URL adresses for the texture icon:</h6>
+                    <input class="form-control" type="url" id="icon-tf" name="icon">
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Preview:</label>
+                    <h6 class="col-sm-10">Please insert the URL adresses for the texture preview:</h6>
+                    <input class="form-control" type="url" id="preview-tf" name="preview" required>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Mask:</label>
+                    <h6 class="col-sm-10">Please insert the URL adresses for the texture mask:</h6>
+                    <input class="form-control" type="url" id="mask-tf" name="mask">
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Texture:</label>
+                    <h6 class="col-sm-10">Please insert the URL adresses for the texture:</h6>
+                    <input class="form-control" type="url" id="texture-tf" name="url" required>
+                </div>
+
+                <div class="form-group">
+                    <h6>Please select a permission for the texture:</h6>
+                    <label class="control-label col-sm-3">Permissions:</label>
+                    <div class="col-sm-3">
+                        <select class="form-control" id="permissions-list" name="permissions" required>
+                            <option value="">Please select:</option>
+                            <option value="public" selected>public</option>
+                            <option value="private">private</option>
+                            <option value="onsale">for sale</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <input class="btn btn-primary pull-right" type="submit" id="submit-form" value="Submit">
+                    <a class="btn btn-default pull-right" type="button" id="create-preview" onclick="createPreview();">Preview</a>
+                    <a class="btn btn-default pull-right" type="button" id="clear-form">Clear</a>
+                </div>
+
+                <div class="clearfix"></div>
+
+            </form>
+        </div>
+
+    </div>
+
+    <div id="left-side">
+        <div id="left-side-pinbtn" title="click this to pin/unpin panel"></div>
+        <div id="left-side-content">
+            <h2>Icon:<img id="icon-img" width="32" height="32"></h2>  <!-- title="icon" -->
+            <h2>Preview:</h2>
+            <div id="preview-box"><img id="preview-img" width="256" height="297"></div>  <!-- title="preview" -->
+            <h2>Texture:</h2>
+            <div id="texture-box"><img id="texture-img" width="256" height="256" crossorigin="anonymous"></div>  <!-- title="texture" -->
+        </div>
+    </div>
+
+</section>
+
+    <!-- BOOTSTRAP BOOTBOX -->
+
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/bootbox.min.js"></script>
+<script src="/js/alerts.js"></script>
+<script src="/js/DeviceDetector.js"></script>
+
+    <!-- UTILITIES -->
+    
+<!-- script src="/js/ZipLoader.js"></script -->
+<!-- script src="/js/colorpicker.js"></script -->
+<!-- script src="/js/messg.min.js"></script -->
+<!-- script src="/js/cookies.js"></script -->
+
+<script src="/js/spectrum.js"></script>
+<script src="/js/img2matrix.js"></script>
+<script src="/js/spinner.js"></script>
+
+    <!-- THREEJS -->
+
+<script src="/three/three.js"></script>
+<script src="/three/EditorControls.js"></script>
+<script src="/three/FirstPersonControls.js"></script>
+<script src="/three/Detector.js"></script>
+<script src="/three/Projector.js"></script>
+<script src="/three/Animation.js"></script>
+<script src="/three/AnimationHandler.js"></script>
+<script src="/three/KeyFrameAnimation.js"></script>
+<script src="/three/BVHImport.js"></script>
+<script src="/js/scene-helpers.js"></script>
+<script src="/js/EdgesHelper.js"></script>
+<script src="/js/side-panels.js"></script>
+<script src="/js/helpers.js"></script>
+
+<script>
+
+//  saveToDesktop( renderer.domElement.toDataURL() ) );
+
+    function dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','), 
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), 
+            n = bstr.length, 
+            u8arr = new Uint8Array(n);
+            
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new Blob([u8arr], {type:mime});
+    }
+
+//  Save image to desktop.
+    function saveToDesktop(dataurl){
+        dataurl.replace("image/png", "image/octet-stream");
+        var link = document.createElement("a");
+        $(link).on("click", function(){ this.remove(); });
+        link.download = ["dress3", "preview", Date.now().toString()].join("-") + ".png";
+        link.href = dataurl;  //  debugMode && console.log("a.href:", a.href);
+        document.body.append( link ); 
+        link.click();
+    }
+
+</script>
+
+<script>
+
+//  dress3_scene.js
+
+    var rendererSelector = "#render-container";
+    var fontPath = "/three/fonts/helvetiker_regular.typeface.json";
+
+    if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+    var container = $(rendererSelector)[0];
+    var scene, camera, renderer, controls;
+    var sceneLights, axisCustomHelper, axisOriginHelper;
+    var projector, keyboard, clock;
+
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0x000000 ); // 0xeeeeee
+
+    var fov = 50, near = 1, far = 10000;
+    var camera = new THREE.PerspectiveCamera( fov, aspect(), near, far );
+    camera.position.set( 0, 20, 35 );
+    camera.rotation.set( 0, 0, 0 );
+    camera.name = "FPS_CAMERA" ;
+
+    scene.add(directionalLight(0xffffff,  1000, 1000,  1000, 0.5));
+    scene.add(directionalLight(0xffffff,  1000, 1000, -1000, 0.5)); 
+    scene.add(directionalLight(0xffffff, -1000, 1000,  1000, 0.5)); 
+    scene.add(directionalLight(0xffffff, -1000, 1000, -1000, 0.5));
+    scene.add(directionalLight(0xffffff,     0,-5000,     0, 0.3));
+
+    projector = new THREE.Projector();
+//  keyboard = new KeyboardState();
+    clock = new THREE.Clock();
+
+    renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        preserveDrawingBuffer: true,
+    });
+
+    renderer.shadowMap.enabled = true;
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize( container.offsetWidth, container.offsetHeight );
+//  container.appendChild( renderer.domElement );
+
+    controls = new THREE.EditorControls(camera, renderer.domElement);
+    $(rendererSelector).on("mouseenter", function(e){ if (!!controls) controls.enabled = true; });
+    $(rendererSelector).on("mouseleave", function(e){ if (!!controls) controls.enabled = false; });
+    
+    $(window).on( "resize", function () {
+        camera.aspect = aspect();
+        camera.updateProjectionMatrix();
+        renderer.setSize( container.offsetWidth, container.offsetHeight );
+    });
+
+    function aspect(){ 
+        return (container.offsetWidth / container.offsetHeight); 
+    }
+
+</script>
+
+
+<script>
+
+//  dress3_startup.js
+
+    var controlsFocusSelector = "#controls-focus";
+    var focusLock = $(controlsFocusSelector)[0];
+
+    var mesh, meshBBbox;
+    var _filepath = "/skinned/HF_Dress_FBK05_v03.js";
+
+    w3.getHttpObject( _filepath, function(json){
+        mesh = loadSkinnedAsset( json );
+        scene.add( mesh );
+        controls.focus( mesh, true );
+        debugMode && console.log( "mesh:", mesh );
+
+        if (!!mesh) {
+        
+        //  Bounding Box.
+            meshBBbox = new THREE.BoundingBoxHelper( mesh, 0xffff00 );
+            meshBBbox.update(); 
+            meshBBbox.visible = false; 
+            scene.add( meshBBbox );
+        
+        //  Animate.
+            animate();
+            camera.lookAt( controls.center );
+            container.appendChild( renderer.domElement );
+            
+        }
+
+    });
+
+    function loadSkinnedAsset( json ){
+        var loader = new THREE.JSONLoader();
+        var object = loader.parse( json );
+
+        var geometry = object.geometry;
+        geometry.computeFaceNormals();
+        geometry.computeVertexNormals();
+        geometry.computeBoundingBox();
+        geometry.computeBoundingSphere();
+
+        var material = SkinnedStandardMaterial();
+        var skinned = new THREE.SkinnedMesh( geometry, material );
+
+        skinned.frustumCulled = false;  // VERY IMPORTANT // 
+        skinned.position.set( 0, 0, 0 );
+        skinned.rotation.set( 0, 0, 0 ); 
+        skinned.scale.set( 1, 1, 1 );
+        skinned.renderDepth = 1;
+
+        return skinned;
+    }
+
+    function SkinnedStandardMaterial(){
+        return new THREE.MeshStandardMaterial({
+            skinning:true,
+            bumpScale:0.05,
+            transparent:true,
+            side: THREE.FrontSide
+        });
+    }
+
+</script>
+
+<script>
+
+//  dress3_runtime.js
+
+    if (!isMobile && !leftSidePinBtn.pinned) toggleSidePanel(leftSidePinBtn);
+
+    function animate(){
+        windowAnimationFrameRequestID = requestAnimationFrame( animate );
+        update();
+        render();
+    }
+
+    function render(){
+        renderer.render( scene, camera );
+    }
+
+    function update() {
+        var delta = clock.getDelta();
+        var time = clock.getElapsedTime();
+    //  if (!!keyboard) keyboard.update(delta);
+    //  if ( isMobile && !!meshBBbox ) controls.focus( meshBBbox, true );
+        if (!!meshBBbox && focusLock.checked) controls.focus( meshBBbox, false );
+    }
+
+//  Deallocate renderer to avoid memory leaks. // VERY IMPORTANT //
+    function deallocateRendererContext( renderer ){
+
+    //  sources: "https://stackoverflow.com/questions/21548247/clean-up-threejs-webgl-contexts",
+    //        "https://github.com/mrdoob/three.js/blob/r78/src/renderers/WebGLRenderer.js#L308".
+
+        renderer.forceContextLoss(); //  THE MOST IMPORTANT  //
+        renderer.dispose();          //  Removes the "webglcontextlost" event listener.
+
+        renderer.context    = null;
+        renderer.domElement = null;
+        renderer            = null;
+    }
+
+    function deallocateMeshTextures( mesh ){
+
+        if (!mesh) return;
+        if (!mesh.material) return;
+
+        var deallocate = {};
+        if (!!mesh.material.map) { 
+            deallocate.map = mesh.material.map;
+            mesh.material.map = null; 
+        }
+        if (!!mesh.material.bumpMap) { 
+            deallocate.bumpMap = mesh.material.bumpMap; 
+            mesh.material.bumpMap = null; 
+        }
+
+        mesh.material.needsUpdate = true;
+
+        debugMode && console.log( "deallocate:", Object.keys(deallocate) );
+        for (var name in deallocate){
+            deallocate[name].dispose();
+            delete deallocate[name];
+        }
+    }
+
+</script>
+
+<script>
+
+//  dress3_form.js
+
+    var errmsg = "URL is not valid. Please enter a valid image url.";
+    var corsmsg = [
+        "URL is not valid or remote image is not",
+        "<a href='https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image' target='_blank'> CORS enabled. </a>",
+        "Please enter a",
+        "<a href='https://en.wikipedia.org/wiki/Cross-origin_resource_sharing' target='_blank'> cross-origin </a>",
+        "image valid address."
+    ].join("");
+    
+    var dress3FormSelector = "#dress3-form";
+    var nameTxtfieldSelector = "#name-tf";
+    var typeDropListSelector = "#type-list";
+    var iconImgSelector = "#icon-img";
+    var previewImgSelector = "#preview-img";
+    var textureImgSelector = "#texture-img";
+    var iconTxtfieldSelector = "#icon-tf";
+    var previewTxtfieldSelector = "#preview-tf";
+    var textureTxtfieldSelector = "#texture-tf";
+    var maskTxrFieldSelector = "#mask-tf";
+    var imgHeightAutoSelector = ".img-height-auto";
+    var imgHeightAutoClassname = "img-height-auto";
+    var clearFormSelector = "#clear-form";
+    var submitFormSelector = "#submit-form";
+
+//  Flags.
+
+    var _icnflag = false;
+    var _prvflag = false;
+    var _txrflag = false;
+
+//  Images.
+
+    var _icon = $(iconImgSelector)[0]
+    var _preview = $(previewImgSelector)[0]
+    var _texture = $(textureImgSelector)[0]
+
+//  Resets.
+
+    function flagsReset(){
+        _icnflag = false;
+        _prvflag = false;
+        _txrflag = false;
+    }
+
+    function imagesReset(){
+        _icon.removeAttribute("src");
+        _preview.removeAttribute("src");
+        _texture.removeAttribute("src");
+        w3.removeClass(_preview, imgHeightAutoClassname);
+        w3.removeClass(_texture, imgHeightAutoClassname);
+    }
+
+    function reset(form){
+        flagsReset();
+        form.reset();
+        imagesReset();
+        $(spinner).remove();
+        deallocateMeshTextures( mesh );
+    }
+
+</script>
+
+<script>
+
+//  dress3_controller.js
+
+//  Icon.
+
+    $(iconTxtfieldSelector).on("paste", function(e){
+        debugMode && console.log( "paste:" );
+    });
+
+//  test icon: "https://s20.postimg.cc/t0m3by98t/dress3_test_icon.png".
+
+    $(iconTxtfieldSelector).on("change", function(e){
+    //  e.preventDefault();
+        var _self = this;
+        var _img = $(iconImgSelector)[0];
+
+        $(rendererSelector).append(spinner);
+
+        if ( this.value == "" ){
+            _icnflag = false;
+            _img.removeAttribute("src");
+
+            debugMode && console.log( "Icon URL:", _img.src );
+            debugMode && console.log( "icon-flag:", _icnflag );
+            $(spinner).remove(); return;
+        }
+        
+        debugMode && console.log( iconTxtfieldSelector + ":", this.value );
+        
+        _img.onload = onLoad;
+        _img.onerror = onError;
+        _img.src = this.value;
+
+        function onLoad(){
+            _icnflag = true;
+            debugMode && console.log( "load:", _icnflag );
+            debugMode && console.log( "Icon URL:", this.src);
+            $(spinner).remove();
+        }
+
+        function onError(){
+            _icnflag = false;
+            _self.value = "";
+
+            this.removeAttribute("src");
+            bootboxErrorAlert( errmsg );
+
+            debugMode && console.log( "Icon URL:", this.src );
+            debugMode && console.log( "icon-flag:", _icnflag );
+
+            $(spinner).remove();
+        }
+
+    });
+
+
+//  Preview.
+
+    $(previewTxtfieldSelector).on("paste", function(e){
+        debugMode && console.log( "paste:" );
+    });
+
+//  test preview: "https://s20.postimg.cc/cbkng7s4t/dress3_test_preview.png".
+
+    $(previewTxtfieldSelector).on("change", function(e){
+    //  e.preventDefault();
+        var _self = this;
+        var _img = $(previewImgSelector)[0];
+
+        $(rendererSelector).append(spinner);
+
+        if ( this.value == "" ) { 
+            _prvflag = false;
+            _img.removeAttribute("src");
+
+            w3.removeClass(_img, imgHeightAutoClassname);
+            if (_img.classList.length == 0) _img.removeAttribute("class");
+
+            debugMode && console.log( "Preview URL:", _img.src );
+            debugMode && console.log( "preview-flag:", _prvflag );
+
+            $(spinner).remove(); return;
+        }
+
+        debugMode && console.log(previewTxtfieldSelector + ":", this.value );
+        
+        _img.onload = onLoad;
+        _img.onerror = onError;
+        _img.src = this.value;
+
+        w3.addClass(_img, imgHeightAutoClassname);
+
+        function onLoad(){
+            _prvflag = true;
+            debugMode && console.log( "load:", _prvflag );
+            debugMode && console.log( "Preview URL:", this.src);
+            $(spinner).remove();
+        }
+
+        function onError(){
+            _prvflag = false;
+            _self.value = "";
+
+            this.removeAttribute("src");
+            w3.removeClass(this, imgHeightAutoClassname);
+            if (this.classList.length == 0) this.removeAttribute("class");
+
+            bootboxErrorAlert( errmsg );
+
+            debugMode && console.log( "Preview URL:", this.src );
+            debugMode && console.log( "preview-flag:", _prvflag );
+
+            $(spinner).remove();
+        }
+    });
+
+//  Mask.
+
+    $(maskTxrFieldSelector).on("paste", function(e){
+        debugMode && console.log( "paste:" );
+    });
+
+    $(maskTxrFieldSelector).on("change", onTextureChange);
+
+//  Texture.
+
+    $(textureTxtfieldSelector).on("paste", function(e){
+        debugMode && console.log( "paste:" );
+    });
+
+//  test texture: "https://i.imgur.com/NdDJTky.png"
+
+    $(textureTxtfieldSelector).on("change", onTextureChange);
+
+    function onTextureChange(e){
+    //  e.preventDefault();
+        var _self = this;
+        var _img = $(textureImgSelector)[0];
+
+        $(rendererSelector).append(spinner);
+/*
+        if ( $(textureTxtfieldSelector).val() == "" ) { 
+            _txrflag = false;
+            _img.removeAttribute("src");
+
+            w3.removeClass(_img, imgHeightAutoClassname);
+            if (_img.classList.length == 0) _img.removeAttribute("class");
+            
+            debugMode && console.log( "Texture URL:", this.src );
+            debugMode && console.log( "texture-flag:", _txrflag );
+
+        //  Reset mesh textures.
+            deallocateMeshTextures( mesh );
+
+            $(spinner).remove(); return;
+        }
+*/
+        debugMode && console.log(textureTxtfieldSelector + ":", this.value );
+
+        _img.onload = onLoad;
+        _img.onerror = onError;
+
+        if ( $(textureTxtfieldSelector).val() !== "" ){
+            _img.src = $(textureTxtfieldSelector).val();
+        } else {
+            _img.src = "https://i.imgur.com/NdDJTky.png";
+        }
+
+        w3.addClass(_img, imgHeightAutoClassname);
+
+    //  Mask.
+        var _maskUrl;
+        if ( $(maskTxrFieldSelector).val() != "" ){
+        //  _maskUrl = "https://i.imgur.com/NdDJTky.png";
+            _maskUrl = $(maskTxrFieldSelector).val();
+        } else {
+            _maskUrl = "https://i.imgur.com/NdDJTky.png";
+        }
+
+        var imagecanvas = document.createElement('canvas');
+        var imagecontext = imagecanvas.getContext('2d');
+
+        var newImg = document.createElement('img');
+        newImg.crossOrigin = "anonymous";
+        newImg.src = _img.src;
+        
+        newImg.onload = function() {
+            var width  = newImg.width;
+            var height = newImg.height;
+            
+            var mask = document.createElement('img');
+            mask.crossOrigin = "anonymous";
+            mask.src = _maskUrl;     // IMPORTANT // img.getAttribute('data-mask'); //
+            mask.onload = function() {
+                imagecanvas.width  = width;
+                imagecanvas.height = height;
+
+                imagecontext.drawImage(mask, 0, 0, width, height);
+                imagecontext.globalCompositeOperation = 'source-atop'; // IMPORTANT //
+                imagecontext.drawImage(_img, 0, 0);
+                
+                _img.src = imagecanvas.toDataURL();
+
+                $(spinner).remove();
+            }
+        }
+
+        function onLoad(){
+
+            _txrflag = true;
+            debugMode && console.log( "texture-flag:", _txrflag );
+        //  debugMode && console.log( "Texture URL:", this.src);
+            debugMode && console.log( "load completed:", this.complete);
+
+        //  Apply texture on mesh.
+            var name = $(nameTxtfieldSelector).val();
+        //  var type = $(typeDropListSelector).val();
+
+            var texture = new THREE.Texture(this);
+
+            if (!texture) {
+                _txrflag = false;
+                $(textureTxtfieldSelector).val("");
+                this.removeAttribute("src");
+                w3.removeClass(this, imgHeightAutoClassname);
+                if (this.classList.length == 0) this.removeAttribute("class");
+                bootboxErrorAlert( "Can not create texture. Sorry!" );
+                debugMode && console.log( "Texture URL:", this.src );
+                debugMode && console.log( "texture-flag:", _txrflag );
+                $(spinner).remove(); return;
+            }
+
+            texture.sourceFile = this.src;
+            if (name != "") texture.name = name;
+            debugMode && console.log( "texture:", texture );
+
+            if (!mesh) return;
+            
+        //  Reset mesh textures.
+            deallocateMeshTextures( mesh );
+            
+            var material = mesh.material;
+            if (!material) material = SkinnedStandardMaterial();
+
+            material.map = material.bumpMap = texture;
+            material.bumpMap.needsUpdate = material.map.needsUpdate = true;
+            material.needsUpdate = true;
+
+            debugMode && console.log( "material:", mesh.material );
+
+        //  $(spinner).remove();
+        }
+
+        function onError(){
+            _txrflag = false;
+            $(textureTxtfieldSelector).val("");
+
+            this.removeAttribute("src");
+            w3.removeClass(this, imgHeightAutoClassname);
+            if (this.classList.length == 0) this.removeAttribute("class");
+
+            bootboxErrorAlert( corsmsg );
+
+            debugMode && console.log( "Texture URL:", this.src );
+            debugMode && console.log( "texture-flag:", _txrflag );
+            
+        //  Reset mesh textures.
+            deallocateMeshTextures( mesh );
+            
+            $(spinner).remove();
+        }
+
+    }
+
+    function dress3_mask(img){
+        var maskUrl = "https://i.imgur.com/NdDJTky.png";
+
+        var imagecanvas = document.createElement("canvas");
+        var imagecontext = imagecanvas.getContext("2d");
+        
+    //  uncomment do see the canvas to debug.
+    //  document.body.appendChild(imagecanvas);
+
+        var newImg = document.createElement("img");
+        newImg.crossOrigin = "anonymous";
+        newImg.src = img.src;
+        
+        newImg.onload = function() {
+            var width  = newImg.width;
+            var height = newImg.height;
+            
+            var mask = document.createElement("img");
+            mask.crossOrigin = "anonymous";
+            mask.src = maskUrl;  // IMPORTANT //
+            mask.onload = function() {
+                imagecanvas.width  = width;
+                imagecanvas.height = height;
+                
+                imagecontext.drawImage(mask, 0, 0, width, height);
+                imagecontext.globalCompositeOperation = "source-atop"; // IMPORTANT //
+                imagecontext.drawImage(img, 0, 0);
+                
+                img.src = imagecanvas.toDataURL();
+            }
+        }
+    }
+
+    function createPreview(){
+        var image = $(previewImgSelector)[0];
+        image.src = renderer.domElement.toDataURL();
+    }
+
+    /*
+        renderer.domElement.toBlob(function(blob){
+            var image = $(previewImgSelector)[0];
+        	var url = URL.createObjectURL(blob);
+        	console.log(url);
+        	image.onLoad = function(){
+                console.log( URL.revokeObjectURL( url ) );
+            };
+        	image.src = url;
+        });
+    */
+
+//  Clear.
+
+    $(clearFormSelector).on("click", function(){
+        reset( $(dress3FormSelector)[0] );
+    });
+
+
+//  Submit.
+
+    var submitFormBtnSelector = "#submit-form";
+
+    $(dress3FormSelector).on("submit", function(e){
+        var form = this;
+        e.preventDefault();
+        debugMode && console.log("submit:", e);
+
+    //  Validate form.
+        debugMode && console.log("flags validation:", validate_flags());
+        if ( !validate_flags() ) return;
+        function validate_flags(){ 
+            return ( _icnflag && _prvflag && _txrflag ); 
+        };
+        
+    //  Ajax submit.
+        var action = $(form).attr("action");
+        
+    //  Serialize the form data.
+        var formData = $(form).serialize();
+    //  var formData = $(form).serializeArray();
+        debugMode && console.log("formData:", formData);
+
+    //  Submit the form using AJAX.
+        var jqxhr = $.ajax({
+
+            type: "POST",  // method.
+            url: $(form).attr("action"),
+            data: $(form).serialize(),
+            dataType: "json",
+            jsonp: false,
+            username: "anonymous",
+            password: "anonymous",
+
+            success: function(results, textStatus, jqXHR){
+                debugMode && console.log( textStatus );
+            //  debugMode && console.log(textStatus + ":", results);
+            //  debugMode && console.log("jqXHR:", jqXHR);
+                var msg = "Success!";
+                bootboxSuccessAlert( msg );
+            },
+
+            error: function( jqXHR, textStatus, errorThrown ){
+                debugMode && console.log( textStatus );
+            //  debugMode && console.log(textStatus + ":", errorThrown);
+            //  debugMode && console.log("jqXHR:", jqXHR);
+                var msg = ["Error:", errorThrown].join(" ")
+                bootboxErrorAlert( msg );
+            }
+
+        }).then(
+        
+            function( results, textStatus, jqXHR ){
+            //  success.
+                debugMode && console.log(textStatus + ":", results);
+            //  debugMode && console.log("jqXHR:", jqXHR);
+
+                reset( form );
+            //  $(spinner).remove();
+            },
+    
+            function( jqXHR, textStatus, errorThrown ){
+            //  error.            
+                debugMode && console.error(
+                    textStatus + ":", errorThrown + ":", 
+                    $(jqXHR.responseText).text()
+                );
+            //  debugMode && console.log("jqXHR:", jqXHR);
+
+                reset( form );
+            //  $(spinner).remove();
+            }
+
+        ).then(function(){
+            
+            $(spinner).remove();
+            
+        }).then(function(){
+
+            debugMode && console.log("then 2");
+
+        });
+
+        $(document.body).append(spinner);
+
+    });
+
+</script>
+
+
+</body>
+</html>

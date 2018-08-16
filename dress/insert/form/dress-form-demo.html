@@ -1,0 +1,99 @@
+<!-- dress-form-demo.html -->
+
+<form class="well" id="dress3-form" action="" method="post">
+
+    <h2>Dress-D3 texture insert</h2>
+    
+    <div class="form-group">
+        <h6>Please insert a title for the texture:</h6>
+        <label class="control-label col-sm-2">Name:</label>
+        <div class="col-sm-10">
+            <input class="form-control" type="text" id="name-tf" name="name" required autofocus>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="control-label col-sm-2">Asset:</label>
+        <div class="col-sm-10">
+            <input class="form-control" type="text" id="asset" value="HF DressLayer FemaleBodyKit05 v03" disabled>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2">Gender:</label>
+        <div class="col-sm-4">
+            <select class="form-control" id="gender-list" name="gender" required readOnly>
+                <option value="">Please select a gender:</option>
+                <option value="male">male</option>
+                <option value="female" selected>female</option>
+            </select>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="form-group">
+        <label class="control-label col-sm-2">Category:</label>
+        <div class="col-sm-4">
+            <select class="form-control" id="category-list" name="category" required readOnly>
+                <option value="">Please select a category:</option>
+                <option value="dress" selected>dress</option>
+            </select>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="form-group">
+        <h6>Please select a type for the texture:</h6>
+        <label class="control-label col-sm-2">Type:</label>
+        <div class="col-sm-4">
+            <select class="form-control" id="type-list" name="type" required>
+                <option value="">Please select a type:</option>
+                <option value="map" selected>map</option>
+                <option value="bumpMap">bump</option>
+                <!-- option value="normalMap">normal</option -->
+            </select>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2">Icon:</label>
+        <h6 class="col-sm-10">Please insert the URL adresses for the texture icon:</h6>
+        <input class="form-control" type="url" id="icon-tf" name="icon">
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2">Preview:</label>
+        <h6 class="col-sm-10">Please insert the URL adresses for the texture preview:</h6>
+        <input class="form-control" type="url" id="preview-tf" name="preview" required>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2">Mask:</label>
+        <h6 class="col-sm-10">Please insert the URL adresses for the texture mask:</h6>
+        <input class="form-control" type="url" id="mask-tf" name="mask">
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2">Texture:</label>
+        <h6 class="col-sm-10">Please insert the URL adresses for the texture:</h6>
+        <input class="form-control" type="url" id="texture-tf" name="url" required>
+    </div>
+
+    <div class="form-group">
+        <h6>Please select a permission for the texture:</h6>
+        <label class="control-label col-sm-3">Permissions:</label>
+        <div class="col-sm-3">
+            <select class="form-control" id="permissions-list" name="permissions" required>
+                <option value="">Please select:</option>
+                <option value="public" selected>public</option>
+                <option value="private">private</option>
+                <option value="onsale">for sale</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <input class="btn btn-primary pull-right" type="submit" id="submit-form" value="Submit">
+        <a class="btn btn-default pull-right" type="button" id="create-preview" onclick="createPreview();">Preview</a>
+        <a class="btn btn-default pull-right" type="button" id="clear-form">Clear</a>
+    </div>
+
+    <div class="clearfix"></div>
+
+</form>
